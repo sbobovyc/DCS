@@ -1,0 +1,52 @@
+
+
+#==================================================
+# SCB_SHARED_LIB_NAME
+#==================================================
+
+SCB_SHARED_LIB_NAME replace 
+
+
+#==================================================
+# SCB_EXECUTABLE_NAME
+#==================================================
+
+SCB_EXECUTABLE_NAME replace DCS
+
+
+#==================================================
+# CPPPATH
+#==================================================
+
+CPPPATH append /usr/include/opencv 
+CPPPATH append -I/usr/local/include/ImageMagick
+
+
+#==================================================
+# CCFLAGS
+#==================================================
+
+CCFLAGS append '-g -O2 -pthread'
+
+
+#==================================================
+# LINKFLAGS
+#==================================================
+
+LINKFLAGS append -L/usr/lib -Wl,-z,relro -pie -L/usr/lib/X11 -L/usr/lib -L/usr/lib
+LINKFLAGS append -L/usr/local/lib
+
+
+#==================================================
+# LIBS
+#==================================================
+
+LIBS append -lMagick++ -lMagickWand -lMagickCore -llcms -ltiff -lfreetype -ljasper -ljpeg -lpng -lfontconfig -lwmf -lwmflite -lXext -lXt -lSM -lICE -lX11 -lbz2 -lxml2 -lz -lm -lgomp -lpthread -lltdl
+LIBS append -lml -lcvaux -lhighgui -lcv -lcxcore
+
+
+#==================================================
+# LIBPATH
+#==================================================
+
+LIBPATH append -L/usr/local/lib -lml -lcvaux -lhighgui -lcv -lcxcore
