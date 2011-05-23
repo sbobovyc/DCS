@@ -23,7 +23,11 @@ class DCS_gui(Tkinter.Tk):
         Constructor
         '''
         Tkinter.Tk.__init__(self,parent)
-        self.parent = parent
+        self.parent = parent        
+        self.width = 800;
+        self.height = 600;
+        self.number_of_colors = 4;
+        self.max_level = 3;
         self.initialize()
         
     def initialize(self):
@@ -82,11 +86,20 @@ class DCS_gui(Tkinter.Tk):
         self.button_generate.grid_rowconfigure(0, weight=1)
         self.button_generate.grid(row=1,column=0)
         
-        self.spin_label = DCS_spin_label(self.frame2, text="Number of colors", from_=1, to=99, default=3)
+        self.spin_label = DCS_spin_label(self.frame2, text="Number of colors", from_=1, to=99, default=self.number_of_colors)
         self.spin_label.grid(row=2, column=0)
         
+        self.levels = DCS_spin_label(self.frame2, text="Max level", from_=1, to=5, default=self.max_level)
+        self.levels.grid(row=3, column=0)
+        
         self.color_list = DCS_color_list(self.frame2)
-        self.color_list.grid(row=3, column=0)
+        self.color_list.grid(row=4, column=0)
+        
+        self.width_label = DCS_spin_label(self.frame2, text="Width", from_=1, to=1600, default=self.width)
+        self.width_label.grid(row=5, column=0)
+        
+        self.height_label = DCS_spin_label(self.frame2, text="Height", from_=1, to=1600, default=self.height)
+        self.height_label.grid(row=6, column=0)
         
         self.frame1.pack(anchor=Tkinter.NW, expand=Tkinter.TRUE, fill=Tkinter.BOTH)
         #self.frame1.pack()

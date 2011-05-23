@@ -4,6 +4,7 @@ Created on Dec 24, 2010
 @author: sbobovyc
 '''
 import Tkinter
+import tkMessageBox
 from functools import partial
 
 from tkFileDialog import askopenfilename, asksaveasfile, asksaveasfilename
@@ -55,7 +56,7 @@ class DCS_gui_events(object):
         if err != 0:
             return
             
-        self.colors = DCS_utils.calc_colors(hist,3)
+        self.colors = DCS_utils.calc_colors(hist,self.parent_gui.number_of_colors)
         print self.colors
         
         self.base_color = (0,0,0) 
@@ -73,17 +74,21 @@ class DCS_gui_events(object):
         
     def generate(self):
                 
-        width = 600
-        height = 600
+        width = self.parent_gui.width
+        height = self.parent_gui.height
     
         self.current_image = Image.new ( "RGB", (width,height), self.base_color )
         draw = ImageDraw.Draw ( self.current_image )
         
-        
-        for x in range(0, 500):
-            blob = DCS_utils.Cammo_blob(self.colors[0],0,draw,width,height, max_level=2)
-            blob = DCS_utils.Cammo_blob(self.colors[1],0,draw,width,height, max_level=2)
-            blob = DCS_utils.Cammo_blob(self.colors[2],0,draw,width,height, max_level=2)
+        try:
+            for x in range(0, 500):
+                blob = DCS_utils.Cammo_blob(self.colors[0], 0, draw, width, height, max_level=2)
+                blob = DCS_utils.Cammo_blob(self.colors[1], 0, draw, width, height, max_level=2)
+                blob = DCS_utils.Cammo_blob(self.colors[2], 0, draw, width, height, max_level=2)
+        except:
+            tkMessageBox.showerror(message="Input image file not specified")
+            return
+
         self.imagetk = ImageTk.PhotoImage(self.current_image)
         self.parent_gui.canvas.create_image(0,0,image=self.imagetk)
         self.parent_gui.canvas.config(scrollregion=self.parent_gui.canvas.bbox(Tkinter.ALL))
