@@ -17,7 +17,7 @@ class DCS_gui_events(object):
     '''
     classdocs
     '''
-    parent_gui = None
+    
     source_image_path = ""
     output_image_path = ""
     imagetk = None
@@ -56,7 +56,7 @@ class DCS_gui_events(object):
         if err != 0:
             return
             
-        self.colors = DCS_utils.calc_colors(hist,self.parent_gui.number_of_colors)
+        self.colors = DCS_utils.calc_colors(hist,int(self.parent_gui.num_colors.get()))
         print self.colors
         
         self.base_color = (0,0,0) 
@@ -68,23 +68,23 @@ class DCS_gui_events(object):
         
         print "base color", self.base_color
         
-    def update_num_colors(self):
-        self.num_colors = self.num_colors
-        print self.num_colors 
-        
     def generate(self):
                 
         width = self.parent_gui.width
         height = self.parent_gui.height
-    
+        self.analyze_image()
+        
         self.current_image = Image.new ( "RGB", (width,height), self.base_color )
         draw = ImageDraw.Draw ( self.current_image )
         
         try:
-            for x in range(0, 500):
-                blob = DCS_utils.Cammo_blob(self.colors[0], 0, draw, width, height, max_level=2)
-                blob = DCS_utils.Cammo_blob(self.colors[1], 0, draw, width, height, max_level=2)
-                blob = DCS_utils.Cammo_blob(self.colors[2], 0, draw, width, height, max_level=2)
+#            for x in range(0, 500):
+#                blob = DCS_utils.Cammo_blob(self.colors[0], 0, draw, width, height, max_level=2)
+#                blob = DCS_utils.Cammo_blob(self.colors[1], 0, draw, width, height, max_level=2)
+#                blob = DCS_utils.Cammo_blob(self.colors[2], 0, draw, width, height, max_level=2)
+            for each in self.colors:
+                for x in range(0, 500):
+                    blob = DCS_utils.Cammo_blob(each, 0, draw, width, height, max_level=int(self.parent_gui.levels.get()))
         except:
             tkMessageBox.showerror(message="Input image file not specified")
             return
