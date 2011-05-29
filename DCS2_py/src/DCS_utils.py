@@ -10,15 +10,17 @@ import tkMessageBox
 import random
 
 class Cammo_blob():        
-    def __init__(self, color, level, image, canvas_width, canvas_height, x_coord=0, y_coord=0, width = 5, height=5, max_level=4):
+    def __init__(self, color, level, image, canvas_width, canvas_height, distribution, x_coord=0, y_coord=0, width = 5, height=5, max_level=4):
         
         self.width = width
         self.height = height
-        self.distribution = [0.9,0.9,0.9,0.9,0.9,0.9,0.9,0.9]
+        #self.distribution = distribution
+        self.distribution = distribution
         self.regression = [1.0/max_level, 1.0/max_level, 1.0/max_level, 1.0/max_level, 1.0/max_level, 1.0/max_level, 1.0/max_level, 1.0/max_level]
         self.max_level = max_level
 
-        #print "max level ", max_level
+        #print self.distribution
+        
         self.level = level
         self.draw_image = image
         self.color = color
@@ -37,63 +39,58 @@ class Cammo_blob():
             #self.draw_image.rectangle(((self.x_coord, self.y_coord),(self.x_coord+self.width, self.y_coord+self.height)), fill=self.color)
             self.draw_image.rectangle(((self.x_coord, self.y_coord),(self.x_coord+self.width, self.y_coord+self.height)), fill=self.color)
             if random.random() < self.distribution[0]:
-                upper_left_cammo = Cammo_blob(self.color,self.level+1, self.draw_image, self.canvas_height, self.canvas_width, self.x_coord-self.width, self.y_coord-self.height, max_level=self.max_level)
+                upper_left_cammo = Cammo_blob(self.color,self.level+1, self.draw_image, self.canvas_height, self.canvas_width, self.distribution, self.x_coord-self.width, self.y_coord-self.height,  max_level=self.max_level)
             if random.random() < self.distribution[1]:
-                upper_cammo = Cammo_blob(self.color,self.level+1, self.draw_image, self.canvas_height, self.canvas_width, self.x_coord, self.y_coord-self.height, max_level=self.max_level)
+                upper_cammo = Cammo_blob(self.color,self.level+1, self.draw_image, self.canvas_height, self.canvas_width, self.distribution, self.x_coord, self.y_coord-self.height,  max_level=self.max_level)
             if random.random() < self.distribution[2]:
-                upper_right_cammo = Cammo_blob(self.color,self.level+1, self.draw_image, self.canvas_height, self.canvas_width, self.x_coord+self.width, self.y_coord-self.height, max_level=self.max_level)
+                upper_right_cammo = Cammo_blob(self.color,self.level+1, self.draw_image, self.canvas_height, self.canvas_width, self.distribution, self.x_coord+self.width, self.y_coord-self.height,  max_level=self.max_level)
             if random.random() < self.distribution[3]:
-                left_cammo = Cammo_blob(self.color,self.level+1, self.draw_image, self.canvas_height, self.canvas_width, self.x_coord-self.width, self.y_coord, max_level=self.max_level)
+                left_cammo = Cammo_blob(self.color,self.level+1, self.draw_image, self.canvas_height, self.canvas_width,  self.distribution, self.x_coord-self.width, self.y_coord,  max_level=self.max_level)
             if random.random() < self.distribution[4]:
-                right_cammo = Cammo_blob(self.color,self.level+1, self.draw_image, self.canvas_height, self.canvas_width, self.x_coord+self.width, self.y_coord, max_level=self.max_level)
+                right_cammo = Cammo_blob(self.color,self.level+1, self.draw_image, self.canvas_height, self.canvas_width,  self.distribution, self.x_coord+self.width, self.y_coord,  max_level=self.max_level)
             if random.random() < self.distribution[5]:
-                bottom_left_cammo = Cammo_blob(self.color,self.level+1, self.draw_image, self.canvas_height, self.canvas_width, self.x_coord-self.width, self.y_coord+self.height, max_level=self.max_level)
+                bottom_left_cammo = Cammo_blob(self.color,self.level+1, self.draw_image, self.canvas_height, self.canvas_width,  self.distribution, self.x_coord-self.width, self.y_coord+self.height,  max_level=self.max_level)
             if random.random() < self.distribution[6]:
-                bottom_cammo = Cammo_blob(self.color,self.level+1, self.draw_image, self.canvas_height, self.canvas_width, self.x_coord, self.y_coord+self.height, max_level=self.max_level)
+                bottom_cammo = Cammo_blob(self.color,self.level+1, self.draw_image, self.canvas_height, self.canvas_width, self.distribution, self.x_coord, self.y_coord+self.height,  max_level=self.max_level)
             if random.random() < self.distribution[7]:
-                bottom_right_cammo = Cammo_blob(self.color,self.level+1, self.draw_image, self.canvas_height, self.canvas_width, self.x_coord+self.width, self.y_coord+self.height, max_level=self.max_level)
+                bottom_right_cammo = Cammo_blob(self.color,self.level+1, self.draw_image, self.canvas_height, self.canvas_width, self.distribution, self.x_coord+self.width, self.y_coord+self.height,  max_level=self.max_level)
             
             
         elif(self.level < self.max_level):
+            self.tmp_distribution = [0,0,0,0,0,0,0,0]
             for x in range(0, len(self.distribution)):
-                self.distribution[x] = self.distribution[x] - self.regression[x]*self.level
+                self.tmp_distribution[x] = self.distribution[x] - self.regression[x]*self.level
             self.x_coord = x_coord
             self.y_coord = y_coord
             
             self.draw_image.rectangle(((self.x_coord, self.y_coord),(self.x_coord+self.width, self.y_coord+self.height)), fill=self.color)
             #print self.distribution[0]
-            if random.random() < self.distribution[0]:
-                upper_left_cammo = Cammo_blob(self.color,self.level+1, self.draw_image, self.canvas_height, self.canvas_width, self.x_coord-self.width, self.y_coord-self.height, max_level=self.max_level)
+            if random.random() < self.tmp_distribution[0]:
+                upper_left_cammo = Cammo_blob(self.color,self.level+1, self.draw_image, self.canvas_height, self.canvas_width, self.distribution, self.x_coord-self.width, self.y_coord-self.height,  max_level=self.max_level)
                 #print "upper_left ",self.level
-            if random.random() < self.distribution[1]:
-                upper_cammo = Cammo_blob(self.color,self.level+1, self.draw_image, self.canvas_height, self.canvas_width, self.x_coord, self.y_coord-self.height, max_level=self.max_level)
+            if random.random() < self.tmp_distribution[1]:
+                upper_cammo = Cammo_blob(self.color,self.level+1, self.draw_image, self.canvas_height, self.canvas_width, self.distribution, self.x_coord, self.y_coord-self.height,  max_level=self.max_level)
                 #print "upper ",self.level
-            if random.random() < self.distribution[2]:
-                upper_right_cammo = Cammo_blob(self.color,self.level+1, self.draw_image, self.canvas_height, self.canvas_width, self.x_coord+self.width, self.y_coord-self.height, max_level=self.max_level)
+            if random.random() < self.tmp_distribution[2]:
+                upper_right_cammo = Cammo_blob(self.color,self.level+1, self.draw_image, self.canvas_height, self.canvas_width, self.distribution, self.x_coord+self.width, self.y_coord-self.height,  max_level=self.max_level)
                 #print "upper_right ",self.level
-            if random.random() < self.distribution[3]:
-                left_cammo = Cammo_blob(self.color,self.level+1, self.draw_image, self.canvas_height, self.canvas_width, self.x_coord-self.width, self.y_coord, max_level=self.max_level)
+            if random.random() < self.tmp_distribution[3]:
+                left_cammo = Cammo_blob(self.color,self.level+1, self.draw_image, self.canvas_height, self.canvas_width, self.distribution, self.x_coord-self.width, self.y_coord,  max_level=self.max_level)
                 #print "left ",self.level
-            if random.random() < self.distribution[4]:
-                right_cammo = Cammo_blob(self.color,self.level+1, self.draw_image, self.canvas_height, self.canvas_width, self.x_coord+self.width, self.y_coord, max_level=self.max_level)
+            if random.random() < self.tmp_distribution[4]:
+                right_cammo = Cammo_blob(self.color,self.level+1, self.draw_image, self.canvas_height, self.canvas_width, self.distribution, self.x_coord+self.width, self.y_coord,  max_level=self.max_level)
                 #print "right ",self.level
-            if random.random() < self.distribution[5]:
-                bottom_left_cammo = Cammo_blob(self.color,self.level+1, self.draw_image, self.canvas_height, self.canvas_width, self.x_coord-self.width, self.y_coord+self.height, max_level=self.max_level)
+            if random.random() < self.tmp_distribution[5]:
+                bottom_left_cammo = Cammo_blob(self.color,self.level+1, self.draw_image, self.canvas_height, self.canvas_width, self.distribution, self.x_coord-self.width, self.y_coord+self.height,  max_level=self.max_level)
                 #print "bottom_left ",self.level
-            if random.random() < self.distribution[6]:
-                bottom_cammo = Cammo_blob(self.color,self.level+1, self.draw_image, self.canvas_height, self.canvas_width, self.x_coord, self.y_coord+self.height, max_level=self.max_level)
+            if random.random() < self.tmp_distribution[6]:
+                bottom_cammo = Cammo_blob(self.color,self.level+1, self.draw_image, self.canvas_height, self.canvas_width, self.distribution, self.x_coord, self.y_coord+self.height,  max_level=self.max_level)
                 #print "bottom ",self.level
-            if random.random() < self.distribution[7]:
-                bottom_right_cammo = Cammo_blob(self.color,self.level+1, self.draw_image, self.canvas_height, self.canvas_width, self.x_coord+self.width, self.y_coord+self.height, max_level=self.max_level)
+            if random.random() < self.tmp_distribution[7]:
+                bottom_right_cammo = Cammo_blob(self.color,self.level+1, self.draw_image, self.canvas_height, self.canvas_width, self.distribution, self.x_coord+self.width, self.y_coord+self.height,  max_level=self.max_level)
                 #print "bottom_right ",self.level
         else:
-            pass
-        
-    def set_distribution_regression(self, distribution, regression):
-        self.distribution = distribution
-        self.regression = regression
-        self.draw_image
-        self.draw(self.canvas_width, self.canvas_height, self.x_coord, self.y_coord)
+            pass        
         
 def histogram_image(image):
     #read image

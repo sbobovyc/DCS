@@ -42,7 +42,7 @@ class DCS_gui_events(object):
         print self.source_image_path          
         self.analyze_image()
         self.thumb = DCS_utils.source_image_thumbnail(self.source_image_path)
-        self.parent_gui.canvas2.create_image(64,64,image=self.thumb)
+        self.parent_gui.canvas2.create_image(64, 64, image=self.thumb)
         
 
     def file_save(self):
@@ -56,15 +56,15 @@ class DCS_gui_events(object):
         if err != 0:
             return
             
-        self.colors = DCS_utils.calc_colors(hist,int(self.parent_gui.num_colors.get()))
+        self.colors = DCS_utils.calc_colors(hist, int(self.parent_gui.num_colors.get()))
         print self.colors
         
-        self.base_color = (0,0,0) 
+        self.base_color = (0, 0, 0) 
         
-        for each in self.colors[0:len(self.colors)-1]:
+        for each in self.colors[0:len(self.colors) - 1]:
             self.base_color = (self.base_color[0] + each[0], self.base_color[1] + each[1], self.base_color[2] + each[2])
              
-        self.base_color = (self.base_color[0] / len(self.colors)-1, self.base_color[1] / len(self.colors)-1, self.base_color[2] / len(self.colors)-1)
+        self.base_color = (self.base_color[0] / len(self.colors) - 1, self.base_color[1] / len(self.colors) - 1, self.base_color[2] / len(self.colors) - 1)
         
         print "base color", self.base_color
         
@@ -74,21 +74,20 @@ class DCS_gui_events(object):
         height = self.parent_gui.height
         self.analyze_image()
         
-        self.current_image = Image.new ( "RGB", (width,height), self.base_color )
-        draw = ImageDraw.Draw ( self.current_image )
+        self.current_image = Image.new ("RGB", (width, height), self.base_color)
+        draw = ImageDraw.Draw (self.current_image)
         
-        try:
-#            for x in range(0, 500):
-#                blob = DCS_utils.Cammo_blob(self.colors[0], 0, draw, width, height, max_level=2)
-#                blob = DCS_utils.Cammo_blob(self.colors[1], 0, draw, width, height, max_level=2)
-#                blob = DCS_utils.Cammo_blob(self.colors[2], 0, draw, width, height, max_level=2)
-            for each in self.colors:
-                for x in range(0, 500):
-                    blob = DCS_utils.Cammo_blob(each, 0, draw, width, height, max_level=int(self.parent_gui.levels.get()))
-        except:
-            tkMessageBox.showerror(message="Input image file not specified")
-            return
+        #try:
+        for each in self.colors:
+            for x in range(0, 500):
+                #distribution = [0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9]
+                distribution = [0.5, 0.5, 0.9, 0.5, 0.5, 0.5, 0.9, 0.5]
+                blob = DCS_utils.Cammo_blob(each, 0, draw, width, height, distribution, max_level=int(self.parent_gui.levels.get()))
+        #except:
+        #    tkMessageBox.showerror(message="Input image file not specified")
+
+        #    return
 
         self.imagetk = ImageTk.PhotoImage(self.current_image)
-        self.parent_gui.canvas.create_image(0,0,image=self.imagetk)
+        self.parent_gui.canvas.create_image(0, 0, image=self.imagetk)
         self.parent_gui.canvas.config(scrollregion=self.parent_gui.canvas.bbox(Tkinter.ALL))
