@@ -15,16 +15,17 @@
 #include <iostream>
 #include <iomanip>
 
-#include "Blob.hpp"
+#include "DCS.hpp"
 
 using namespace std;
 using namespace Magick;
 
 namespace DCS {
-map<Color, unsigned long> create_histogram(string image_path)
+DCS_histogram create_histogram(const string &image_path)
 {
+	cout << image_path << endl;
 	Image image(image_path);
-	map<Color, unsigned long> histogram;
+	DCS_histogram histogram;
 	colorHistogram(&histogram, image);
 	/*
 	std::map<Color,unsigned long>::const_iterator p=histogram.begin();
@@ -47,9 +48,9 @@ void partition_histogram()
 
 }
 
-vector<Color> calculate_colors(map<Color, unsigned long> color_histogram, int number_of_colors)
+DCS_color_list calculate_colors(DCS_histogram color_histogram, int number_of_colors)
 {
-	vector<Color> color_list;
+	DCS_color_list color_list;
 	vector<unsigned long> tmp_color_list(3);
 	int bin_size = color_histogram.size() / number_of_colors;
 	std::vector<std::pair<Color, unsigned long> > color_vector(color_histogram.begin(), color_histogram.end());
@@ -104,7 +105,7 @@ vector<Color> calculate_colors(map<Color, unsigned long> color_histogram, int nu
 }
 
 //TODO add weighted average to base color calculation
-Color calculate_base_color(vector<Color> colors)
+Color calculate_base_color(DCS_color_list colors)
 {
 	unsigned long red = 0;
 	unsigned long blue = 0;

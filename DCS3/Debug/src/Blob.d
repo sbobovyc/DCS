@@ -1,3 +1,4 @@
-src/Blob.d src/Blob.o: ../src/Blob.cpp ../src/Blob.hpp
+src/Blob.d src/Blob.o: ../src/Blob.cpp \
+ /home/sbobovyc/DCS_github/DCS/DCS3/h/Blob.hpp
 
-../src/Blob.hpp:
+/home/sbobovyc/DCS_github/DCS/DCS3/h/Blob.hpp:

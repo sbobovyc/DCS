@@ -7,8 +7,8 @@
 
 #include <iostream>
 #include <vector>
-#include "Blob.hpp"
-#include "Utils.hpp"
+
+#include "DCS.hpp"
 
 using namespace std;
 using namespace Magick;
@@ -24,7 +24,7 @@ int main(int argc, char ** argv)
 	pair<int,int> seed_coords (400,400);
 	int distribution[8] = {90,90,90,90,90,90,90,90};
 
-	map<Color, unsigned long> image_histogram = DCS::create_histogram("image.jpeg");
+	map<Color, unsigned long> image_histogram = DCS::create_histogram("/home/sbobovyc/DCS_github/DCS/DCS3/image.jpeg");
 	vector<Color> color_list = DCS::calculate_colors(image_histogram, 3);
 
 //	for(int i = 0; i < int(color_list.size()); i++)
@@ -39,6 +39,6 @@ int main(int argc, char ** argv)
 	Image image = Image(Geometry(canvas_width, canvas_height), base_color);
 
 	DCS::draw_blobs(1, color1, width, height, canvas_width, canvas_height, max_level, distribution, &image);
-	image.write("out.png");
+	image.write("/home/sbobovyc/DCS_github/DCS/DCS3/out.png");
 	return 0;
 }
