@@ -50,7 +50,7 @@ void DCS_Blob::Build(int current_level, pair<int,int> coordinates) {
         if (Random() < distribution[3])
         	Build(current_level+1, pair<int,int> (coordinates.first-width, coordinates.second));
         if (Random() < distribution[4])
-        	Build(current_level+1, pair<int,int> (coordinates.first, coordinates.second));
+        	Build(current_level+1, pair<int,int> (coordinates.first+width, coordinates.second));
         if (Random() < distribution[5])
         	Build(current_level+1, pair<int,int> (coordinates.first-width, coordinates.second+height));
         if (Random() < distribution[6])
@@ -60,11 +60,11 @@ void DCS_Blob::Build(int current_level, pair<int,int> coordinates) {
 	}
     else if(current_level <= max_level){
     	rectangle_list.push_back( pair<pair<int,int>,pair<int,int> > (pair<int,int> (coordinates.first, coordinates.second) , pair<int,int> (coordinates.first+width, coordinates.second+height)) );
+
     	// distribution is reduntantly calculated, but this is an easy way to implement
     	int tmp_distribution[8] = {0,0,0,0,0,0,0,0};
     	for(int i = 0; i < 8; i++)
     		tmp_distribution[i] = distribution[i] - regression[i]*current_level;
-    	rectangle_list.push_back( pair<pair<int,int>,pair<int,int> > (pair<int,int> (coordinates.first, coordinates.second) , pair<int,int> (coordinates.first+width, coordinates.second+height)) );
 
         if (Random() < tmp_distribution[0])
             Build(current_level+1, pair<int,int> (coordinates.first-width, coordinates.second-height));
@@ -75,7 +75,7 @@ void DCS_Blob::Build(int current_level, pair<int,int> coordinates) {
         if (Random() < tmp_distribution[3])
         	Build(current_level+1, pair<int,int> (coordinates.first-width, coordinates.second));
         if (Random() < tmp_distribution[4])
-        	Build(current_level+1, pair<int,int> (coordinates.first, coordinates.second));
+        	Build(current_level+1, pair<int,int> (coordinates.first+width, coordinates.second));
         if (Random() < tmp_distribution[5])
         	Build(current_level+1, pair<int,int> (coordinates.first-width, coordinates.second+height));
         if (Random() < tmp_distribution[6])
@@ -86,13 +86,13 @@ void DCS_Blob::Build(int current_level, pair<int,int> coordinates) {
 }
 
 /**
- * @return random number ranging 0 to 100
+ * @return random number ranging 1 to 100
  */
 int DCS_Blob::Random()
 {
 	/* initialize random seed: */
 	srand(time(NULL));
-	return rand() % 100 + 2;
+	return rand() % 100 + 1;
 }
 
 std::ostream & operator<<(ostream &out, DCS_Blob const & blob)     //output

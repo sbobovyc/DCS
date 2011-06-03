@@ -11,5 +11,6 @@
 #include "Blob.hpp"
 #include "Utils.hpp"
 #include "DCS_types.hpp"
+#include "Timer.h"
 
 #endif /* DCS_HPP_ */
