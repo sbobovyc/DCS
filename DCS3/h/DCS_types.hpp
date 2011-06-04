@@ -11,7 +11,7 @@
 namespace DCS{
 
 typedef std::map<Magick::Color, unsigned long> DCS_histogram;
-typedef std::vector<Magick::Color> DCS_color_list;
+typedef std::vector< std::pair<Magick::Color, unsigned long> > DCS_color_list;
 
 typedef struct {
 	int red;

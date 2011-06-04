@@ -30,92 +30,50 @@ DCS_histogram create_histogram(const string &image_path)
 	Image image(image_path);
 	DCS_histogram histogram;
 	colorHistogram(&histogram, image);
-	/*
+
+	return histogram;
+}
+
+void print_histogram(const DCS_histogram &histogram)
+{
 	std::map<Color,unsigned long>::const_iterator p=histogram.begin();
 	  while (p != histogram.end())
 	    {
 	      cout << setw(10) << (int)p->second << ": ("
-	           << setw(10) << (int)p->first.redQuantum() << ","
-	           << setw(10) << (int)p->first.greenQuantum() << ","
-	           << setw(10) << (int)p->first.blueQuantum() << ")"
+	           << setw(10) << ((int)p->first.redQuantum() / 65536.0) * 255.0 << ","
+	           << setw(10) << ((int)p->first.greenQuantum() / 65536.0) * 255.0 << ","
+	           << setw(10) << ((int)p->first.blueQuantum() / 65536.0) * 255.0 << ")"
 	           << endl;
 	       p++;
 	    }
-	*/
-
-	return histogram;
 }
 
 void partition_histogram()
 {
 
 }
-DCS_color_list calculate_colors2(DCS_histogram color_histogram, int number_of_colors)
-{
-	DCS_color_list color_list;
-	vector<unsigned long> tmp_color_list(3);
-	int bin_size = color_histogram.size() / number_of_colors;
-	std::vector<std::pair<Color, unsigned long> > color_vector(color_histogram.begin(), color_histogram.end());
-
-	// 1. Figure out bin sizes
-	// 2. Partition histogram according to those bin sizes
-	// 3. Do a weighted average on each bin
-
-	// divide the histogram into almost equal bins
-	// if the number of colors int the histogram is not even, the first bin is the largest bin
-	vector< pair<int,int> > bin_list;
-
-	if(color_histogram.size() % number_of_colors == 0)
-	{
-		for(int i = 0; i < number_of_colors; i++)
-		{
-			bin_list.push_back( pair<int,int> ((i*bin_size),i*bin_size+bin_size-1) );
-		}
-	} else {
-		bin_list.push_back( pair<int,int> (0,bin_size) );
-		for(int i = 1; i < number_of_colors; i++)
-		{
-			bin_list.push_back( pair<int,int> ((i*bin_size+1),(i*bin_size)+bin_size) );
-		}
-	}
-
-	// start weighted average
-	for(int i = 0; i < int(bin_list.size()); i++)
-	{
-		unsigned long weight = 0;
-		for(int j = bin_list[i].first; j <= bin_list[i].second; j++)
-		{
-			tmp_color_list[0] += color_vector[j].first.redQuantum();
-			tmp_color_list[1] += color_vector[j].first.greenQuantum();
-			tmp_color_list[2] += color_vector[j].first.blueQuantum();
-
-
-//			cout << color_vector[j].first.redQuantum() << endl;
-//			cout << color_vector[j].first.greenQuantum() << endl;
-//			cout << color_vector[j].first.blueQuantum() << endl;
-		}
-		int num_elements = (bin_list[i].second - bin_list[i].first);
-		color_list.push_back(Color(tmp_color_list[0] / num_elements, tmp_color_list[1] / num_elements, tmp_color_list[2] / num_elements));
-	}
-
-	return color_list;
-}
 
 DCS_color_list calculate_colors(DCS_histogram color_histogram, int number_of_colors)
 {
 	DCS_color_list color_list;
-	vector<unsigned long> tmp_color_list(3);
-	int bin_size = color_histogram.size() / number_of_colors;
+
+	// convert map to vector
 	std::vector<std::pair<Color, unsigned long> > color_vector(color_histogram.begin(), color_histogram.end());
+
+	//for(int i = 0; i < color_vector.size(); i++)
+		//cout << color_vector[i].first.redQuantum() << " " << color_vector[i].first.greenQuantum() << " " << color_vector[i].first.blueQuantum() << endl;
 
 	// 1. Figure out bin sizes
 	// 2. Partition histogram according to those bin sizes
 	// 3. Do a weighted average on each bin
 
-	// divide the histogram into almost equal bins
+	// Start 1
+	int bin_size = color_histogram.size() / number_of_colors;
+	// End 1
+
+	// Start 2
 	// if the number of colors int the histogram is not even, the first bin is the largest bin
 	vector< pair<int,int> > bin_list;
-
 	if(color_histogram.size() % number_of_colors == 0)
 	{
 		for(int i = 0; i < number_of_colors; i++)
@@ -129,29 +87,34 @@ DCS_color_list calculate_colors(DCS_histogram color_histogram, int number_of_col
 			bin_list.push_back( pair<int,int> ((i*bin_size+1),(i*bin_size)+bin_size) );
 		}
 	}
+	// End 2
 
-	// start weighted average
+	for(int i = 0; i < bin_list.size(); i++)
+		cout << bin_list[i].first << " " << bin_list[i].second << endl;
+
+	// Start 3
+	unsigned long tmp_red = 0;
+	unsigned long tmp_green = 0;
+	unsigned long tmp_blue = 0;
+	unsigned long weight = 0;
+
 	for(int i = 0; i < int(bin_list.size()); i++)
 	{
-		unsigned long weight = 0;
+		weight = 0;
 		for(int j = bin_list[i].first; j <= bin_list[i].second; j++)
 		{
-//			tmp_color_list[0] += color_vector[j].first.redQuantum();
-//			tmp_color_list[1] += color_vector[j].first.greenQuantum();
-//			tmp_color_list[2] += color_vector[j].first.blueQuantum();
-
-			tmp_color_list[0] += color_vector[j].first.redQuantum() * color_vector[j].second;
-			tmp_color_list[1] += color_vector[j].first.greenQuantum() * color_vector[j].second;
-			tmp_color_list[2] += color_vector[j].first.blueQuantum() * color_vector[j].second;
+			//cout << color_vector[j].first.redQuantum() << " " << color_vector[j].first.greenQuantum() << " " << color_vector[j].first.blueQuantum() << endl;
+			tmp_red += color_vector[j].first.redQuantum() * color_vector[j].second;
+			tmp_green += color_vector[j].first.greenQuantum() *  color_vector[j].second;
+			tmp_blue += color_vector[j].first.blueQuantum() * color_vector[j].second;
 			weight += color_vector[j].second;
-
-//			cout << color_vector[j].first.redQuantum() << endl;
-//			cout << color_vector[j].first.greenQuantum() << endl;
-//			cout << color_vector[j].first.blueQuantum() << endl;
 		}
 		unsigned long num_elements = weight;
 //		int num_elements = (bin_list[i].second - bin_list[i].first);
-		color_list.push_back(Color(tmp_color_list[0] / num_elements, tmp_color_list[1] / num_elements, tmp_color_list[2] / num_elements));
+		color_list.push_back(pair<Magick::Color, unsigned long> (Color(tmp_red / num_elements, tmp_green / num_elements, tmp_blue / num_elements), num_elements) );
+		tmp_red = 0;
+		tmp_green = 0;
+		tmp_blue = 0;
 	}
 
 	return color_list;
@@ -163,16 +126,18 @@ Color calculate_base_color(DCS_color_list colors)
 	unsigned long red = 0;
 	unsigned long blue = 0;
 	unsigned long green = 0;
+	unsigned long weight = 0;
 
 	for(int i = 0; i < int(colors.size()); i++)
 	{
-		red += colors[i].redQuantum();
-		green += colors[i].greenQuantum();
-		blue += colors[i].blueQuantum();
+		red += colors[i].first.redQuantum() * colors[i].second;
+		green += colors[i].first.greenQuantum() * colors[i].second;
+		blue += colors[i].first.blueQuantum() * colors[i].second;
+		weight += colors[i].second;
 	}
-	red /= colors.size();
-	green /= colors.size();
-	blue /= colors.size();
+	red /= weight;
+	green /= weight;
+	blue /= weight;
 
 	return Color(red, green, blue);
 }
