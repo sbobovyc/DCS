@@ -7,6 +7,8 @@
 
 #include <sys/time.h>
 
+namespace DCS {
+
 class Timer
 {
 public:
@@ -56,5 +58,6 @@ inline double Timer::now() const
     return t.tv_sec + t.tv_usec/1000000.0;
 }
 
+}
 #endif
 
