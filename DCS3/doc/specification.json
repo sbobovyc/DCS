@@ -1,0 +1,22 @@
+{
+	"project" : {
+		"project_name" : "string",
+		
+		"canvas_parameters" : {
+			"num_colors" = "int";
+			"canvas_height" = "int";
+			"canvas_width" = "int";
+		}
+	
+		"layer_description" : {
+			"octave_count" = 2;
+			"frequency" = "digits";
+			"persistence" = "digits";
+			"threshold" = "digits";
+			"z" = "digits";
+			"red" = "int";
+			"green" = "int";
+			"blue" = "int";
+		}
+	}
+}

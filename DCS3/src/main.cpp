@@ -16,7 +16,7 @@ using namespace Magick;
 //TODO Add boost's command line parsing capabilities
 int main(int argc, char ** argv)
 {
-	int num_colors = 6;
+	int num_colors = 3;
 	int canvas_height = 800;
 	int canvas_width = 800;
 	int octave_count = 2;
@@ -51,8 +51,24 @@ int main(int argc, char ** argv)
 //		cout << "Run time :" << timer.read() << endl;
 	}
 
-	Magick::Image final_image;
-	Magick::flattenImages(&final_image, image_list.begin(), image_list.end());
+	// 1
+//	Magick::Image final_image;
+//	Magick::flattenImages(&final_image, image_list.begin(), image_list.end());
+
+	// 2
+	Magick::Image final_image(Magick::Geometry(canvas_width, canvas_height), Magick::Color(0,0,0, TransparentOpacity));
+	DCS::draw_multi_blobs(camo_colors, 800,800, &final_image);
+
+	// 3
+//	Magick::Image final_image(Magick::Geometry(canvas_width, canvas_height), base_color);
+//	int seed = 2;
+//	noise::module::Perlin module;
+//	module.SetOctaveCount(octave_count);
+//	module.SetFrequency(frequency);
+//	module.SetPersistence(persistence);
+//	module.SetSeed(seed);
+
+
 	final_image.write("/home/sbobovyc/DCS_github/DCS3/out.png");
 	return 0;
 }

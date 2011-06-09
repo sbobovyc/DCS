@@ -154,6 +154,20 @@ Magick::Color calculate_base_color(DCS_color_vector colors)
 	return Magick::Color(red, green, blue);
 }
 
+void draw_blobs(Magick::Color color, noise::module::Perlin perlin_module, int canvas_width, int canvas_height, const double threshold, const double z, Magick::Image * image)
+{
+	for(int i = 0; i < canvas_width; i++)
+	{
+		for(int j = 0; j < canvas_height; j++)
+		{
+			double value = perlin_module.GetValue(i, j, z);
+			//cout << i << " " << j << " " << value << endl;
+			if(value > threshold)
+				(*image).pixelColor(i, j, color);
+		}
+	}
+}
+
 //TODO This function needs to be able to have a Perlin noise as an input
 void draw_blobs(Magick::Color color, int canvas_width, int canvas_height, const int octave_count, const double frequency, const double persistence, const int seed, const double threshold, const double z, Magick::Image * image)
 {
@@ -171,6 +185,59 @@ void draw_blobs(Magick::Color color, int canvas_width, int canvas_height, const 
 			//cout << i << " " << j << " " << value << endl;
 			if(value > threshold)
 				(*image).pixelColor(i, j, color);
+		}
+	}
+}
+
+void draw_multi_blobs(const DCS::DCS_color_vector &color_vector, int canvas_width, int canvas_height, Magick::Image * image)
+{
+	noise::module::Const module1;
+	module1.SetConstValue(0.0);
+
+	noise::module::Const module2;
+	module2.SetConstValue(1.0);
+
+	noise::module::Perlin module3;
+	module3.SetOctaveCount(2);
+	module3.SetFrequency(0.03);
+	module3.SetPersistence(0.5);
+	module3.SetSeed(1);
+
+	noise::module::Select final;
+	final.SetSourceModule (0, module1);
+	final.SetSourceModule (1, module2);
+	final.SetControlModule (module3);
+	final.SetBounds (0.0, 1000.0);
+
+	// strange hack here, wanted to use a vecotr of selects, but libnoise would not let me
+	//std::vector <noise::module::Select> selector_vector;
+	//selector_vector.push_back(final);
+
+//	for(unsigned int i = 2; i < color_vector.size(); i++)
+//	{
+//		noise::module::Const tmp_const;
+//		tmp_const.SetConstValue(double(i));
+//
+//		noise::module::Select tmp_selector;
+//		tmp_selector.SetSourceModule(0, *selector_vector[i-1]);
+//		final.SetSourceModule(1, tmp_const);
+//		final.SetControlModule (module3);
+//		final.SetBounds (0.0, 1000.0);
+//		selector_vector.push_back(&tmp_selector);
+//	}
+
+	double z = 0.3;
+
+	for(int i = 0; i < canvas_width; i++)
+	{
+		for(int j = 0; j < canvas_height; j++)
+		{
+			double value = final.GetValue(i, j, z);
+			cout << value << endl;
+			if(value == 1.0)
+				(*image).pixelColor(i, j, color_vector[0].first);
+			if(value == 2.0)
+				(*image).pixelColor(i, j, color_vector[1].first);
 		}
 	}
 }

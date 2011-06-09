@@ -10,6 +10,7 @@
 
 #include <vector>
 #include <Magick++.h>
+#include <libnoise/noise.h>
 #include "DCS_types.hpp"
 
 namespace DCS {
@@ -19,7 +20,9 @@ void print_color_vector(const DCS_color_vector &color_vector);
 void sort_color_vector(DCS_color_vector &color_vector);
 DCS::DCS_color_vector calculate_colors(std::map<Magick::Color, unsigned long> color_histogram, int number_of_colors);
 Magick::Color calculate_base_color(DCS::DCS_color_vector);
+void draw_blobs(Magick::Color color, noise::module::Perlin perlin_module, int canvas_width, int canvas_height, const double threshold, const double z, Magick::Image * image);
 void draw_blobs(Magick::Color color, int canvas_width, int canvas_height, const int octave_count, const double frequency, const double persistence, const int seed, const double threshold, const double z, Magick::Image * image);
+void draw_multi_blobs(const DCS::DCS_color_vector &color_vector, int canvas_width, int canvas_height, Magick::Image * image);
 }
 
 #endif /* UTILS_HPP_ */
