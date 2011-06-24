@@ -1,5 +1,6 @@
+LIBNOISEINC = /usr/include/libnoise
 all:
-	g++ -c -fPIC -Wall -O -ansi -pedantic utils.cpp -I/usr/include/libnoise -I.
+	g++ -c -fPIC -Wall -O -ansi -pedantic utils.cpp -I${LIBNOISEINC} -I.
 	g++ -shared -o utils.so utils.o -lnoise 
 
 clean:

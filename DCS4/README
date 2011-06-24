@@ -1,0 +1,17 @@
+Dependencies:
+g++
+libnoise
+python2.7
+
+To compile:
+make
+
+To run example:
+cd src/
+python DCS_utils.py
+gnome-open out.png
+
+To change libnoise include path:
+cd src/
+open the Makefile
+change LIBNOISEINC to libnoise include path

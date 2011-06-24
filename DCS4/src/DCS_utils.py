@@ -1,4 +1,5 @@
 import ctypes
+import os
 from PIL import Image
 
 
@@ -117,17 +118,26 @@ def calculate_base_color(colors):
 
     return [red, green, blue]
 
-def draw_blobs(width, height, octave_count, frequency, persistence, seed, threshold, z):
-    canvas_width = ctypes.c_int(800) 
-    canvas_height = ctypes.c_int(800) 
-    octave_count = ctypes.c_int(2)  
-    frequency = ctypes.c_double(0.04)
-    persistence = ctypes.c_double(0.02) 
-    seed = ctypes.c_int(22) 
-    threshold = ctypes.c_double(0.2) 
-    z = ctypes.c_double(1.0) 
-    
-    
+##
+# @param canvas_width: integer
+# @param canvas_height: integer
+# @param octave_count: integer
+# @param frequency: double
+# @param persistence: double
+# @param seed: int  
+# @param threshold: double
+# @param z: double
+def draw_blobs(canvas_width, canvas_height, octave_count, frequency, persistence, seed, threshold, z):
+    utils = ctypes.CDLL(os.path.join(os.getcwd(), "utils.so"))
+    canvas_width = ctypes.c_int(canvas_width) 
+    canvas_height = ctypes.c_int(canvas_height) 
+    octave_count = ctypes.c_int(octave_count)  
+    frequency = ctypes.c_double(frequency)
+    persistence = ctypes.c_double(persistence) 
+    seed = ctypes.c_int(seed) 
+    threshold = ctypes.c_double(threshold) 
+    z = ctypes.c_double(z) 
+        
     # create a multidimensional int array
     INT = ctypes.c_int
     PINT = ctypes.POINTER(INT)
@@ -147,47 +157,28 @@ def draw_blobs(width, height, octave_count, frequency, persistence, seed, thresh
             ptr[i][j] = 0
     
     utils.draw_blobs(canvas_width, canvas_height, octave_count, frequency, persistence, seed, threshold, z, ptr)
+    return ptr
     
-def main():
-    utils = ctypes.CDLL('/home/sbobovyc/workspace/DCS4/src/utils.so')
-    image = "/home/sbobovyc/workspace/DCS4/image.jpeg"
+def main():    
+    image = os.path.join(os.getcwd(), "image.jpeg")
     numcolors = 3
     hist = histogram_colors(get_image_pixels(image))
     colors = calc_colors(hist, numcolors)
     print colors 
     print calculate_base_color(colors)
-    canvas_width = ctypes.c_int(800) 
-    canvas_height = ctypes.c_int(800) 
-    octave_count = ctypes.c_int(2)  
-    frequency = ctypes.c_double(0.04)
-    persistence = ctypes.c_double(0.02) 
-    seed = ctypes.c_int(22) 
-    threshold = ctypes.c_double(0.2) 
-    z = ctypes.c_double(1.0) 
     
-    
-    # create a multidimensional int array
-    INT = ctypes.c_int
-    PINT = ctypes.POINTER(INT)
-    PPINT = ctypes.POINTER(PINT)
-    
-    # An array of ints can be passed to a function that takes int*.
-    INTARR = INT * canvas_width.value
-    # An array of int* can be passed to your function as int**.
-    PINTARR = PINT * canvas_height.value
-    
-    # Declare int* array.
-    ptr = PINTARR()
-    for i in range(canvas_height.value):
-        # fill out each pointer with an array of ints.
-        ptr[i] = INTARR()
-        for j in range(canvas_width.value):
-            ptr[i][j] = 0
-    
-    utils.draw_blobs(canvas_width, canvas_height, octave_count, frequency, persistence, seed, threshold, z, ptr)
-    
-    out_image = Image.new("RGBA", (canvas_width.value, canvas_height.value), (0,0,0,0)) #completely transparent image
-    draw_pixels(ptr, out_image, colors[0][0])
+    canvas_width = 800 
+    canvas_height = 800 
+    octave_count = 2  
+    frequency = 0.04
+    persistence = 0.02 
+    seed = 22 
+    threshold = 0.2 
+    z = 1.0
+    mask = draw_blobs(canvas_width, canvas_height, octave_count, frequency, persistence, seed, threshold, z)
+        
+    out_image = Image.new("RGBA", (canvas_width, canvas_height), (0,0,0,0)) #completely transparent image
+    draw_pixels(mask, out_image, colors[0][0])
     
     out_image.save("out.png")
 
