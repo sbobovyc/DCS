@@ -7,6 +7,7 @@
  */
 
 #include <noise.h>
+#include <omp.h>
 #include "utils.hpp"
 
 int test(void)
@@ -23,6 +24,7 @@ void draw_blobs(const int canvas_width, const int canvas_height, const int octav
 
 	for(int i = 0; i < canvas_width; i++)
 	{
+		#pragma omp parallel for
 		for(int j = 0; j < canvas_height; j++)
 		{
 			double value = module.GetValue(i, j, z);

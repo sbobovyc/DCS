@@ -1,17 +1,21 @@
 import ctypes
 import os
+import random
 from PIL import Image
 
 
-def combine_layers(image_list):
-    return Image.merge("RGBA", image_list)
+def combine_layers(image_list, width, height):
+    final_image = Image.new("RGBA", (width, height), (0,0,0,0))
+    
+    for image in image_list:
+        final_image.paste(image, None, image)
+    return final_image
 ##
 # @param ptr: ctypes int* array
 # @param image: PIL image object 
 # @param color: RGB color triple
 def draw_pixels(ptr, image, color):
-    width = image.size[0]
-    height = image.size[1]
+    width, height = image.size    
     
     pix = image.load()
     for i in range(height):
@@ -116,7 +120,7 @@ def calculate_base_color(colors):
     green /= total_weight;
     blue /= total_weight;
 
-    return [red, green, blue]
+    return (red, green, blue)
 
 ##
 # @param canvas_width: integer
@@ -165,22 +169,35 @@ def main():
     hist = histogram_colors(get_image_pixels(image))
     colors = calc_colors(hist, numcolors)
     print colors 
-    print calculate_base_color(colors)
+    base_color = calculate_base_color(colors) 
+    print base_color
     
     canvas_width = 800 
     canvas_height = 800 
     octave_count = 2  
     frequency = 0.04
-    persistence = 0.02 
-    seed = 22 
+    persistence = 0.02     
     threshold = 0.2 
     z = 1.0
-    mask = draw_blobs(canvas_width, canvas_height, octave_count, frequency, persistence, seed, threshold, z)
-        
-    out_image = Image.new("RGBA", (canvas_width, canvas_height), (0,0,0,0)) #completely transparent image
-    draw_pixels(mask, out_image, colors[0][0])
     
-    out_image.save("out.png")
+    mask_list = []
+    image_list = []
+    image_list.append(Image.new("RGBA", (canvas_width, canvas_height), base_color))
+    image_list[0].save("layer0.png")
+    i = 1
+    for each in colors:
+        random.seed()
+        seed = random.randrange(0,10000)
+        mask = draw_blobs(canvas_width, canvas_height, octave_count, frequency, persistence, seed, threshold, z)
+        mask_list.append(mask)
+        out_image = Image.new("RGBA", (canvas_width, canvas_height), (0,0,0,0))  #completely transparent image        
+        draw_pixels(mask, out_image, each[0])
+        image_list.append(out_image)
+        out_image.save("layer%i.png" % i)
+        i += 1
+    
+    final_image = combine_layers(image_list, canvas_width, canvas_height)    
+    final_image.save("out.png")
 
 if __name__ == '__main__':
     main()
