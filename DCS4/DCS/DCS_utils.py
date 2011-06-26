@@ -10,6 +10,7 @@ def combine_layers(image_list, width, height):
     for image in image_list:
         final_image.paste(image, None, image)
     return final_image
+
 ##
 # @param ptr: ctypes int* array
 # @param image: PIL image object 
@@ -102,6 +103,9 @@ def calc_colors(histogram, numcolors):
         
     return color_list
 
+##
+# @param colors: list of colors
+# @return base_color: a weighted average of the input colors 
 def calculate_base_color(colors):
     """ Weighted average of supplied colors """
     red = 0
@@ -163,7 +167,8 @@ def draw_blobs(canvas_width, canvas_height, octave_count, frequency, persistence
     utils.draw_blobs(canvas_width, canvas_height, octave_count, frequency, persistence, seed, threshold, z, ptr)
     return ptr
     
-def main():    
+
+if __name__ == '__main__':
     image = os.path.join(os.getcwd(), "image.jpeg")
     numcolors = 3
     hist = histogram_colors(get_image_pixels(image))
@@ -198,6 +203,3 @@ def main():
     
     final_image = combine_layers(image_list, canvas_width, canvas_height)    
     final_image.save("out.png")
-
-if __name__ == '__main__':
-    main()
