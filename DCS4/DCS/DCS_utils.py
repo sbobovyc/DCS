@@ -166,8 +166,23 @@ def draw_blobs(canvas_width, canvas_height, octave_count, frequency, persistence
     
     utils.draw_blobs(canvas_width, canvas_height, octave_count, frequency, persistence, seed, threshold, z, ptr)
     return ptr
-    
 
+##
+# @param image_path: full path to the image
+# @param geometry: tuple that represents the geometry of the generated thumbnail  
+# @return: thumbnail of the image as PIL image
+def source_image_thumbnail(image_path, geometry):
+    #create thumbnail using PIL    
+    image = Image.open(image_path)
+    image.thumbnail(geometry, Image.ANTIALIAS)    
+    
+    return image
+
+def image_to_imagetk():
+    pass
+    #imagetk = ImageTk.PhotoImage(image)
+    #image.save("thumbnail", "JPEG")
+    
 if __name__ == '__main__':
     image = os.path.join(os.getcwd(), "image.jpeg")
     numcolors = 3
