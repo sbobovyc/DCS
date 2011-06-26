@@ -7,11 +7,11 @@ To compile:
 make
 
 To run example:
-cd src/
+cd DCS
 python DCS_utils.py
 gnome-open out.png
 
 To change libnoise include path:
-cd src/
+cd DCS
 open the Makefile
 change LIBNOISEINC to libnoise include path
