@@ -1,3 +1,8 @@
+"""
+Created on June 28, 2011
+
+@author: sbobovyc
+"""
 import Tkinter
 import ImageTk
 import DCS_utils

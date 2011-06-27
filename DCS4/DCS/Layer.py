@@ -1,8 +1,14 @@
+"""
+Created on June 22, 2011
+
+@author: sbobovyc
+"""
 import PIL
 import DCS_utils
 
-class Layer:
-    def __init__(self, _width, _height, _octave_count, _frequency, _persistence, _seed, _threshold, _z):
+class Layer(object):    
+    
+    def __init__(self, _width=0, _height=0, _octave_count=0, _frequency=0, _persistence=0, _seed=0, _threshold=0, _z=0):
         self.width = _width
         self.height = _height
         self.octave_count = _octave_count
@@ -23,7 +29,4 @@ class Layer:
         draw_pixels(self.mask, self.image, color)
         
          
-if __name__ == '__main__':
-    layer = Layer(800,800, 2, 0.2, 0.2, 200, 0.1, 2.0)       
-    layer.generate_layer_mask()  
     

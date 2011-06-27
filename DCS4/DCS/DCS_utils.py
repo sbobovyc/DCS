@@ -1,3 +1,8 @@
+"""
+Created on June 22, 2011
+
+@author: sbobovyc
+"""
 import ctypes
 import os
 import random
@@ -106,8 +111,7 @@ def calc_colors(histogram, numcolors):
 ##
 # @param colors: list of colors
 # @return base_color: a weighted average of the input colors 
-def calculate_base_color(colors):
-    """ Weighted average of supplied colors """
+def calculate_base_color(colors):    
     red = 0
     blue = 0
     green = 0
