@@ -8,7 +8,9 @@ To compile:
 make
 
 To run gui:
-bash run-DCS-app.sh
+1. bash run-DCS-app.sh
+2. Click file->open
+3. Select an image (sample image in images/)
 
 To change libnoise include path:
 cd DCS
