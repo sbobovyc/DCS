@@ -7,7 +7,12 @@ import Tkinter
 
 class GUI_display_frame(Tkinter.Frame):
     
-    def __init__(self, parent):
+    def __init__(self, parent, controller):
+        # register with controller
+        self.name = "display_frame"
+        self.controller = controller
+        self.controller.register(self, self.name)
+        
         # create a scrollable canvas
         Tkinter.Frame.__init__(self, parent, bd=2, relief=Tkinter.FLAT, background="grey")
                  
@@ -23,7 +28,8 @@ class GUI_display_frame(Tkinter.Frame):
         self.canvas.pack(side=Tkinter.LEFT, expand=Tkinter.TRUE, fill=Tkinter.BOTH)
         
         self.xscrollbar.config(command=self.canvas.xview)
-        self.yscrollbar.config(command=self.canvas.yview)                        
+        self.yscrollbar.config(command=self.canvas.yview)      
+        
 
 
         

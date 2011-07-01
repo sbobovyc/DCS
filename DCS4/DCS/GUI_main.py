@@ -9,7 +9,7 @@ import Tkinter
 from GUI_menubar import GUI_menubar
 from GUI_work_frame import GUI_work_frame
 from GUI_display_frame import GUI_display_frame
-from Tkinter import Tk
+from Controller import Controller
 
 class GUI_main(Tkinter.Tk):
     '''
@@ -21,7 +21,12 @@ class GUI_main(Tkinter.Tk):
         Constructor
         '''
         Tkinter.Tk.__init__(self,parent)
-        self.parent = parent        
+        self.parent = parent
+        self.name = "main"        
+        
+        # instantiate the controller, register with the controller
+        self.controller = Controller()
+        self.controller.register(self, self.name)
         self.initialize()
         
     def initialize(self):
@@ -30,7 +35,7 @@ class GUI_main(Tkinter.Tk):
         self.geometry("%dx%d+0+0" % (self.w, self.h))
                 
         #create menu
-        self.menu = GUI_menubar(self)
+        self.menu = GUI_menubar(self, self.controller)
         self.config(menu=self.menu)
         
         
@@ -38,10 +43,10 @@ class GUI_main(Tkinter.Tk):
         self.big_frame = Tkinter.Frame(self, bd=2, relief=Tkinter.FLAT, background="grey")
         self.big_frame.pack(anchor=Tkinter.NW, expand=Tkinter.TRUE, fill=Tkinter.BOTH)
         
-        self.work_frame = GUI_work_frame(self.big_frame)
+        self.work_frame = GUI_work_frame(self.big_frame, self.controller)
         self.work_frame.pack(side=Tkinter.RIGHT, anchor=Tkinter.N)
         
-        self.display_frame = GUI_display_frame(self.big_frame)
+        self.display_frame = GUI_display_frame(self.big_frame, self.controller)
         self.display_frame.pack(side=Tkinter.LEFT, expand=Tkinter.TRUE, fill=Tkinter.BOTH)
                      
         

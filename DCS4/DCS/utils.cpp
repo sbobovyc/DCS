@@ -31,7 +31,9 @@ void draw_blobs(const int canvas_width, const int canvas_height, const int octav
 			double value = module.GetValue(i, j, z);
 			//cout << i << " " << j << " " << value << endl;
 			if(value > threshold)
+			{
 				mask[i][j] = 1;
+			}
 		}
 	}
 }

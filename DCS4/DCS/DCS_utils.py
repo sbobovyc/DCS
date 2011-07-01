@@ -8,7 +8,10 @@ import os
 import random
 from PIL import Image
 
-
+##
+# @param image_list: list of PIL images
+# @param width: width of output image, an integer
+# @param height: height of output image, an integer
 def combine_layers(image_list, width, height):
     final_image = Image.new("RGBA", (width, height), (0,0,0,0))
     
@@ -75,11 +78,10 @@ def calc_colors(histogram, numcolors):
     # end 1
     
     # start 2
-    #divide the histogram into almost equal bins
-    #TODO test if this works with even numbers
+    #divide the histogram into almost equal bins    
     bin_list = []
     if (len(histogram)  % numcolors) == 0:
-        for i in range( (0, numcolors) ):
+        for i in range(0, numcolors):
             bin_list.append( (i*bin_size, i*bin_size+bin_size-1) )
     else:
         bin_list.append( (0,bin_size) )
@@ -110,7 +112,7 @@ def calc_colors(histogram, numcolors):
 
 ##
 # @param colors: list of colors
-# @return base_color: a weighted average of the input colors 
+# @return base_color: a triplet, representing a weighted average of the input colors 
 def calculate_base_color(colors):    
     red = 0
     blue = 0
@@ -181,11 +183,6 @@ def source_image_thumbnail(image_path, geometry):
     image.thumbnail(geometry, Image.ANTIALIAS)    
     
     return image
-
-def image_to_imagetk():
-    pass
-    #imagetk = ImageTk.PhotoImage(image)
-    #image.save("thumbnail", "JPEG")
     
 if __name__ == '__main__':
     image = os.path.join(os.getcwd(), "image.jpeg")
