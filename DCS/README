@@ -2,14 +2,12 @@ Dependencies:
 g++
 libnoise
 python2.7
+openmp
 
 To compile:
 make
 
-To run example:
-cd DCS
-python DCS_utils.py
-gnome-open out.png
+To run gui:
 
 To change libnoise include path:
 cd DCS

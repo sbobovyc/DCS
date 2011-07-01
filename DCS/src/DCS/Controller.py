@@ -44,14 +44,12 @@ class Controller(object):
                                                float(params["threshold"]), float(params["z"]), color[0])            
             self.layer_list.append(layer)
             self.object_map["layer_list"].insert_layer(layer)
-        #each layer generates mask and draw image_path
-        i = 1
+        #each layer generates mask and draw image_path        
         for layer in self.layer_list:
             layer.generate_layer_mask()
             layer.draw_layer()
-            image_list.append(layer.image)
-            layer.image.save("%i.png"%i)
-            i += 1
+            image_list.append(layer.image)            
+            
         #combine layers        
         #compose an image from the background color and layers
         image = DCS_utils.combine_layers(image_list, int(params["width"]), int(params["height"]))

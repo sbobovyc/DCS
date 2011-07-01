@@ -1,5 +1,5 @@
 all:
-	make -C DCS all
+	make -C src/DCS all
 
 clean:
-	make -C DCS clean
+	make -C src/DCS clean
