@@ -1,5 +1,5 @@
 from PIL import Image,ImageTk
-import DCS_utils
+import Utils
 import Layer
 
 class Controller(object):
@@ -30,10 +30,10 @@ class Controller(object):
         params = self.object_map["work_frame"].get()
          
         #generate histogram
-        pixels = DCS_utils.get_image_pixels(self.image_path)
-        self.histogram = DCS_utils.histogram_colors(pixels)
-        color_list = DCS_utils.calc_colors(self.histogram, int(params["num_colors"]))        
-        base_color = DCS_utils.calculate_base_color(color_list)
+        pixels = Utils.get_image_pixels(self.image_path)
+        self.histogram = Utils.histogram_colors(pixels)
+        color_list = Utils.calc_colors(self.histogram, int(params["num_colors"]))        
+        base_color = Utils.calculate_base_color(color_list)
         print color_list
         print base_color
         image_list = []
@@ -52,7 +52,7 @@ class Controller(object):
             
         #combine layers        
         #compose an image from the background color and layers
-        image = DCS_utils.combine_layers(image_list, int(params["width"]), int(params["height"]))
+        image = Utils.combine_layers(image_list, int(params["width"]), int(params["height"]))
         self.imagetk=ImageTk.PhotoImage(image)                       
         self.object_map["display_frame"].canvas.create_image(0,0,image=self.imagetk)
         
