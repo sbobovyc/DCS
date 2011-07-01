@@ -15,7 +15,7 @@ import Tkinter
 from menubar import GUI_menubar
 from work_frame import GUI_work_frame
 from display_frame import GUI_display_frame
-from DCS import Controller
+import Controller
 
 class GUI_main(Tkinter.Tk):
     '''
