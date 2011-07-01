@@ -8,6 +8,7 @@ To compile:
 make
 
 To run gui:
+bash run-DCS-app.sh
 
 To change libnoise include path:
 cd DCS
