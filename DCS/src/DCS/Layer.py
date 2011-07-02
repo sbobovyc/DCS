@@ -7,7 +7,8 @@ import PIL
 import Utils
 
 class Layer(object):    
-    def __init__(self, _width=0, _height=0, _octave_count=0, _frequency=0, _persistence=0, _seed=0, _threshold=0, _z=0, color = (0,0,0,0)):
+    def __init__(self, id, _width=0, _height=0, _octave_count=0, _frequency=0, _persistence=0, _seed=0, _threshold=0, _z=0, color = (0,0,0,0)):
+        self.id = id
         self.width = _width
         self.height = _height
         self.octave_count = _octave_count

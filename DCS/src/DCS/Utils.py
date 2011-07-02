@@ -105,7 +105,7 @@ def calc_colors(histogram, numcolors):
             tmp_green += histogram[i][0][1] * weight
             tmp_blue += histogram[i][0][2] * weight
             tmp_weight += histogram[i][1]            
-        color_list.append( ((tmp_red/tmp_weight, tmp_green/tmp_weight, tmp_blue/tmp_weight), tmp_weight) )
+        color_list.append( ((tmp_red/tmp_weight, tmp_green/tmp_weight, tmp_blue/tmp_weight, 255), tmp_weight) )
     # end 3
         
     return color_list

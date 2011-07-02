@@ -11,7 +11,7 @@ class GUI_spin_label(Tkinter.Frame):
     classdocs
     '''
 
-    def __init__(self, parent, text, from_, to, command, state=Tkinter.NORMAL, default=0):
+    def __init__(self, parent, text, from_, to, increment, command, state=Tkinter.NORMAL, default=0):
         '''
         Constructor
         '''
@@ -20,6 +20,7 @@ class GUI_spin_label(Tkinter.Frame):
         self.text = text
         self.from_ = from_
         self.to = to
+        self.increment = increment
         self.default = default
         self.state = state
         self.command = command
@@ -30,7 +31,7 @@ class GUI_spin_label(Tkinter.Frame):
     def initialize(self):
         self.label = Tkinter.Label(self, text=self.text, bg="grey", relief="sunken")
         self.label.pack(side=Tkinter.LEFT, expand=Tkinter.TRUE, fill=Tkinter.X)
-        self.spinbox = Tkinter.Spinbox(self, from_=self.from_, to=self.to, state=self.state, width=3, command=self.command)
+        self.spinbox = Tkinter.Spinbox(self, from_=self.from_, to=self.to, increment=self.increment, state=self.state, width=4, command=self.command)
         self.spinbox.delete(0,"end")
         self.spinbox.insert(0,self.default)
         self.spinbox.pack(side=Tkinter.RIGHT)
@@ -40,8 +41,11 @@ class GUI_spin_label(Tkinter.Frame):
         
     def get(self):
         return self.spinbox.get()
-        
     
-        
+    def clear(self):
+        self.spinbox.delete(0, "end")
+    
+    def set(self, value):
+        self.spinbox.insert(0, value)
         
         

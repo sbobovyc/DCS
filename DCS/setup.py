@@ -10,7 +10,7 @@ setup(name='DCS',
       author='Stanislav Bobovych',
       author_email='stan.bobovych@gmail.com',
       url='http://sites.google.com/site/sbobovyc/',      
-      packages=glob.glob(os.path.join('DCS')),
+      packages=glob.glob(os.path.join('src')),
       ext_modules=[Extension('DCS.utils', ['DCS/utils.cpp'], libraries=['noise'])]
      )
 
