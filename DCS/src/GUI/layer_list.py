@@ -13,7 +13,7 @@ class GUI_layer_list(Tkinter.Frame):
         self.controller.register(self, "layer_list")
                 
         self.text = "Layer:"
-        self.width = 3
+        self.width = 4
         self.height = 5
         self.layer_list = []
         self.currently_selected_layer = None 
