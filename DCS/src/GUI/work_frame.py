@@ -18,8 +18,8 @@ class GUI_work_frame(Tkinter.Frame):
         self.controller.register(self, "work_frame")
         
         #TODO move default initialization to a separate function
-        self.width = 800
-        self.height = 800
+        self.width = 400
+        self.height = 400
         self.num_colors = 3
         self.selected_layer = Tkinter.ANCHOR
         self.default_octave_count = 2

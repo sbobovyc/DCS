@@ -45,7 +45,7 @@ class GUI_spin_label(Tkinter.Frame):
     def clear(self):
         self.spinbox.delete(0, "end")
     
-    def set(self, value):
+    def set(self, value):        
         self.spinbox.insert(0, value)
         
         

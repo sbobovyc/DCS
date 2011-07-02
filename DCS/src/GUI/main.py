@@ -11,6 +11,12 @@ sys.path.append(DCS_path)
 print sys.path
 
 import Tkinter
+#try:
+## Python2
+#import Tkinter as tk
+#except ImportError:
+## Python3
+#import tkinter as tk
 
 from menubar import GUI_menubar
 from work_frame import GUI_work_frame

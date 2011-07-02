@@ -13,6 +13,9 @@ class GUI_menubar(Tkinter.Menu):
         self.name = "menubar"
         self.controller = controller
         self.controller.register(self, self.name)
+        # file types
+        self.file_types = [('all files', '.*'), ('', '.png'), ('', '.pgm'), ('', '.jpeg'), ('', '.bmp')]
+        
         # create a menu
         Tkinter.Menu.__init__(self, parent)
                 
@@ -22,7 +25,7 @@ class GUI_menubar(Tkinter.Menu):
 #        filemenu.add_command(label="Open Project", command=self.callback())
         filemenu.add_command(label="Open ...", command=self.file_open)
 #        filemenu.add_command(label="Save", command=self.callback())
-        filemenu.add_command(label="Save as", command=self.callback())
+        filemenu.add_command(label="Save as", command=self.file_save)
         filemenu.add_separator()
         filemenu.add_command(label="Exit", command=self.exit_callback)
         
@@ -36,8 +39,11 @@ class GUI_menubar(Tkinter.Menu):
     def file_open(self):                
         source_image_path = tkFileDialog.askopenfilename()
         self.controller.open_image(source_image_path) 
-        
-        
+    
+    def file_save(self):
+        output_image_path = tkFileDialog.asksaveasfilename(filetypes=self.file_types)
+        self.controller.save_image(output_image_path)
+         
     def exit_callback(self):
         self.parent.quit()
         
