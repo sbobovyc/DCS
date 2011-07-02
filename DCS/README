@@ -1,10 +1,19 @@
 Dependencies:
 g++
-libnoise
-python2.7
 openmp
+libnoise (libraries and headers)
+python2.7
+python2.7-tk
+python-imaging-tk
+
+To install dependencies on Ubuntu 11.04:
+sudo apt-get install libnoise-dev python2.7-tk python-imaging-tk -y
+
+To checkout from git:
+git clone git://github.com/sbobovyc/DCS.git
 
 To compile:
+cd DCS/DCS
 make
 
 To run gui:
