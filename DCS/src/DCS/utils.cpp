@@ -23,10 +23,10 @@ void draw_blobs(const int canvas_width, const int canvas_height, const int octav
 	module.SetSeed(seed);
 
 	//#pragma omp parallel for
-	for(int i = 0; i < canvas_width; i++)
+	for(int i = 0; i < canvas_height; i++)
 	{
 		//#pragma omp parallel for
-		for(int j = 0; j < canvas_height; j++)
+		for(int j = 0; j < canvas_width; j++)
 		{
 			double value = module.GetValue(i, j, z);
 			//cout << i << " " << j << " " << value << endl;

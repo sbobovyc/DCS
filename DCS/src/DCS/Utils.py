@@ -26,11 +26,11 @@ def combine_layers(image_list, width, height):
 def draw_pixels(ptr, image, color):
     width, height = image.size    
     
-    pix = image.load()
+    pix = image.load()    
     for i in range(height):
         for j in range(width):
-            if ptr[i][j] == 1:
-                pix[i, j] = color 
+            if ptr[i][j] == 1:                
+                pix[j, i] = color   # j,i instead of i,j since pixel object is indexed by x,y not row,column
     
 ##
 # @param image_path: full path to the image 
@@ -105,7 +105,7 @@ def calc_colors(histogram, numcolors):
             tmp_green += histogram[i][0][1] * weight
             tmp_blue += histogram[i][0][2] * weight
             tmp_weight += histogram[i][1]            
-        color_list.append( ((tmp_red/tmp_weight, tmp_green/tmp_weight, tmp_blue/tmp_weight, 255), tmp_weight) )
+        color_list.append( ((tmp_red/tmp_weight, tmp_green/tmp_weight, tmp_blue/tmp_weight), tmp_weight) )
     # end 3
         
     return color_list
@@ -166,10 +166,10 @@ def draw_blobs(canvas_width, canvas_height, octave_count, frequency, persistence
     
     # Declare int* array.
     ptr = PINTARR()
-    for i in range(canvas_height.value):
+    for i in range(0, canvas_height.value):
         # fill out each pointer with an array of ints.
         ptr[i] = INTARR()
-        for j in range(canvas_width.value):
+        for j in range(0, canvas_width.value):
             ptr[i][j] = 0
     
     utils.draw_blobs(canvas_width, canvas_height, octave_count, frequency, persistence, seed, threshold, z, ptr)
@@ -187,7 +187,8 @@ def source_image_thumbnail(image_path, geometry):
     return image
     
 if __name__ == '__main__':
-    image = os.path.join(os.getcwd(), "image.jpeg")
+#    image = os.path.join(os.getcwd(), "image.jpeg")
+    image = "/home/sbobovyc/DCS_github/DCS/DCS/images/image.jpeg"
     numcolors = 3
     hist = histogram_colors(get_image_pixels(image))
     colors = calc_colors(hist, numcolors)
@@ -195,7 +196,7 @@ if __name__ == '__main__':
     base_color = calculate_base_color(colors) 
     print base_color
     
-    canvas_width = 800 
+    canvas_width = 800
     canvas_height = 800 
     octave_count = 2  
     frequency = 0.04
@@ -206,7 +207,7 @@ if __name__ == '__main__':
     mask_list = []
     image_list = []
     image_list.append(Image.new("RGBA", (canvas_width, canvas_height), base_color))
-    image_list[0].save("layer0.png")
+#    image_list[0].save("layer0.png")
     i = 1
     for each in colors:
         random.seed()
@@ -216,7 +217,7 @@ if __name__ == '__main__':
         out_image = Image.new("RGBA", (canvas_width, canvas_height), (0,0,0,0))  #completely transparent image        
         draw_pixels(mask, out_image, each[0])
         image_list.append(out_image)
-        out_image.save("layer%i.png" % i)
+#        out_image.save("layer%i.png" % i)
         i += 1
     
     final_image = combine_layers(image_list, canvas_width, canvas_height)    

@@ -16,7 +16,7 @@ class GUI_layer_list(Tkinter.Frame):
         self.width = 3
         self.height = 5
         self.layer_list = []
-        self.current = None 
+        self.currently_selected_layer = None 
         
         # initialize the frame
         Tkinter.Frame.__init__(self, parent, width=20, background="gray")
@@ -51,12 +51,16 @@ class GUI_layer_list(Tkinter.Frame):
         print "list"
         
     def poll(self):
-        now = self.layers.curselection()
-        if now != self.current:
-            self.list_has_changed(now)
-            self.current = now
+        # make sure only one element is selected
+        selected_layer = self.layers.curselection()
+        if selected_layer != self.currently_selected_layer:
+            self.list_has_changed(selected_layer)
+            self.currently_selected_layer = selected_layer          
         self.after(250, self.poll)
 
+    def get_currently_selected_layer(self):
+        return self.currently_selected_layer[0]
+    
     def list_has_changed(self, selection):
         # a layer was selected, so signal the controller
         # check if an actual layer was selected
@@ -64,8 +68,9 @@ class GUI_layer_list(Tkinter.Frame):
         if len(selection) != 1:
             pass
         else: 
-            self.controller.select_layer(selection[0])
-            print "selection is", selection[0]
+            self.currently_selected_layer = selection[0]
+            self.controller.select_layer(self.currently_selected_layer)
+            print "selection is", selection
  
     
     

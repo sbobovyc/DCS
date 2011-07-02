@@ -51,7 +51,7 @@ class Controller(object):
                 seed = int(params["seed"])
             layer = Layer.Layer(i, int(params["width"]), int(params["height"]), int(params["octave_count"]),
                                                float(params["frequency"]), float(params["persistence"]), seed, 
-                                               float(params["threshold"]), float(params["z"]), color[0])            
+                                               float(params["threshold"]), float(params["z"]), color[0], color[1])            
             self.layer_list.append(layer)
             self.object_map["layer_list"].insert_layer(layer)
             i += 1
@@ -75,8 +75,60 @@ class Controller(object):
         layer = self.layer_list[int(layer_id)]
         # fill the gui with parameters of a particular layer
         self.object_map["work_frame"].set_fields(layer)
+        # set color of layer canvas
+        self.object_map["layer_list"].current_color.config(bg = ("#%02x%02x%02x" % layer.color))
                     
-    def generate_layers(self):
+    def update_layer(self, layer_id):
+        # get the layer from layer_list by id
+        layer = self.layer_list[int(layer_id)]
+        #grab params from gui    
+        params = self.object_map["work_frame"].get()
+        # update layer fields
+        layer.width = int(params["width"])
+        layer.height = int(params["height"])
+        layer.octave_count = int(params["octave_count"])
+        layer.frequency = float(params["frequency"])
+        layer.persistence = float(params["persistence"])
+        if params["seed"] == "rand":
+                layer.seed = random.randint(0, 1000)
+        else:
+                layer.seed = int(params["seed"])
+        
+        layer.threshold = float(params["threshold"])
+        layer.z =  float(params["z"])
+#        layer.color =  color[0]    
+    
+    def generate_layers(self):        
+        #grab params from gui    
+        params = self.object_map["work_frame"].get()
+        
+        # calculate background color, each color has a weight of 1, the effect is that 
+        # the colors are averaged
+        color_list = []
+        for layer in self.layer_list:
+            color_list.append((layer.color, layer.color_weight))      
+        base_color = Utils.calculate_base_color(color_list)
+        
+        # create temporary image list        
+        image_list = []
+        image_list.append(Image.new("RGBA", (int(params["width"]), int(params["height"])), base_color))
+        
+        #each layer generates mask and draw image_path        
+        for layer in self.layer_list:
+            layer.width = int(params["width"])
+            layer.height = int(params["height"])
+            layer.generate_layer_mask()
+            layer.draw_layer()
+            image_list.append(layer.image)            
+            
+        #combine layers        
+        #compose an image from the background color and layers
+        image = Utils.combine_layers(image_list, int(params["width"]), int(params["height"]))
+        self.imagetk=ImageTk.PhotoImage(image)                       
+        self.object_map["display_frame"].canvas.create_image(0,0,image=self.imagetk)        
+#        config(scrollregion=self.parent_gui.canvas.bbox(Tkinter.ALL))
+        
+    def generate_layers2(self):
         #clear out data        
         del self.layer_list[:]
         del self.histogram[:]

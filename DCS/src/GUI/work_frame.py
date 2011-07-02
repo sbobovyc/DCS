@@ -50,12 +50,12 @@ class GUI_work_frame(Tkinter.Frame):
         
         #bottom of rame, layer specific
         #TODO Lots of fixes here 
-        self.octave_count = GUI_spin_label(self, text="Octaves:", from_=1, to=16, increment=1.0, default=self.default_octave_count, command=None)
-        self.frequency = GUI_spin_label(self, text="Frequency:", from_=0.0, to=1.0, increment=0.01, default=self.default_frequency, command=None)
-        self.persistence = GUI_spin_label(self, text="Persistence:", from_=0.0, to=1.0, increment=0.01, default=self.default_persistence, command=None)
-        self.seed = GUI_spin_label(self, text="Seed:", from_=0, to=10000, increment=1.0, default=self.default_seed, command=None)
-        self.threshold = GUI_spin_label(self, text="Threshold:", from_=-5.0, to=5.0, increment=0.01, default=self.default_threshold, command=None)
-        self.z = GUI_spin_label(self, text="Height:", from_=-5.0, to=5.0, increment=0.01, default=self.default_z, command=None)        
+        self.octave_count = GUI_spin_label(self, text="Octaves:", from_=1, to=16, increment=1.0, default=self.default_octave_count, command=self.update_current_layer)
+        self.frequency = GUI_spin_label(self, text="Frequency:", from_=0.0, to=1.0, increment=0.01, default=self.default_frequency, command=self.update_current_layer)
+        self.persistence = GUI_spin_label(self, text="Persistence:", from_=0.0, to=1.0, increment=0.01, default=self.default_persistence, command=self.update_current_layer)
+        self.seed = GUI_spin_label(self, text="Seed:", from_=0, to=10000, increment=1.0, default=self.default_seed, command=self.update_current_layer)
+        self.threshold = GUI_spin_label(self, text="Threshold:", from_=-5.0, to=5.0, increment=0.01, default=self.default_threshold, command=self.update_current_layer)
+        self.z = GUI_spin_label(self, text="Height:", from_=-5.0, to=5.0, increment=0.01, default=self.default_z, command=self.update_current_layer)        
         
     def get(self):
         return {"width":self.width_label.get(), "height":self.height_label.get(), 
@@ -78,3 +78,6 @@ class GUI_work_frame(Tkinter.Frame):
         self.seed.set(layer.seed)
         self.threshold.set(layer.threshold)
         self.z.set(layer.z)
+        
+    def update_current_layer(self):
+        self.controller.update_layer(self.layer_list.get_currently_selected_layer())
