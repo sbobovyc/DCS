@@ -31,6 +31,10 @@ class Controller(object):
     def save_image(self, image_path):                
         self.imagePIL.save(image_path)
     
+    def save_layers(self, output_path, extension):
+        for layer in self.layer_list:            
+            layer.image.save("%s%s%s" % (output_path, layer.id, extension))
+    
     ##
     # This function generates the initial layers. Parameters are taken from the gui, except the seed.
     def generate_layers_init(self):
