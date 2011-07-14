@@ -10,20 +10,19 @@ DCS_path = os.path.abspath("..")
 sys.path.append(DCS_path) 
 print sys.path
 
-import Tkinter
-#try:
-## Python2
-#import Tkinter as tk
-#except ImportError:
-## Python3
-#import tkinter as tk
+try:
+    # Python2
+    import Tkinter as tk
+except ImportError:
+    # Python3
+    import tkinter as tk
 
 from menubar import GUI_menubar
 from work_frame import GUI_work_frame
 from display_frame import GUI_display_frame
 import Controller
 
-class GUI_main(Tkinter.Tk):
+class GUI_main(tk.Tk):
     '''
     classdocs
     '''
@@ -32,7 +31,7 @@ class GUI_main(Tkinter.Tk):
         '''
         Constructor
         '''
-        Tkinter.Tk.__init__(self,parent)
+        tk.Tk.__init__(self,parent)
         self.parent = parent
         self.name = "main"        
         
@@ -52,14 +51,14 @@ class GUI_main(Tkinter.Tk):
         
         
         #create frame structure
-        self.big_frame = Tkinter.Frame(self, bd=2, relief=Tkinter.FLAT, background="grey")
-        self.big_frame.pack(anchor=Tkinter.NW, expand=Tkinter.TRUE, fill=Tkinter.BOTH)
+        self.big_frame = tk.Frame(self, bd=2, relief=tk.FLAT, background="grey")
+        self.big_frame.pack(anchor=tk.NW, expand=tk.TRUE, fill=tk.BOTH)
         
         self.work_frame = GUI_work_frame(self.big_frame, self.controller)
-        self.work_frame.pack(side=Tkinter.RIGHT, anchor=Tkinter.N)
+        self.work_frame.pack(side=tk.RIGHT, anchor=tk.N)
         
         self.display_frame = GUI_display_frame(self.big_frame, self.controller)
-        self.display_frame.pack(side=Tkinter.LEFT, expand=Tkinter.TRUE, fill=Tkinter.BOTH)
+        self.display_frame.pack(side=tk.LEFT, expand=tk.TRUE, fill=tk.BOTH)
                      
         
 if __name__ == "__main__":

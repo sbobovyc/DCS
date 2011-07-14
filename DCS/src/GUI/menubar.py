@@ -3,11 +3,16 @@ Created on June 28, 2011
 
 @author: sbobovyc
 """
-import Tkinter
+try:
+    # Python2
+    import Tkinter as tk
+except ImportError:
+    # Python3
+    import tkinter as tk
 import tkFileDialog
 import os
 
-class GUI_menubar(Tkinter.Menu):
+class GUI_menubar(tk.Menu):
     
     def __init__(self, parent, controller):
         self.parent = parent
@@ -18,9 +23,9 @@ class GUI_menubar(Tkinter.Menu):
         self.file_types = [('all files', '.*'), ('', '.png'), ('', '.pgm'), ('', '.jpeg'), ('', '.bmp')]
         
         # create a menu
-        Tkinter.Menu.__init__(self, parent)
+        tk.Menu.__init__(self, parent)
                 
-        filemenu = Tkinter.Menu(self, tearoff=0)
+        filemenu = tk.Menu(self, tearoff=0)
         self.add_cascade(label="File", menu=filemenu)
 #        filemenu.add_command(label="New Project", command=self.callback())
 #        filemenu.add_command(label="Open Project", command=self.callback())
@@ -31,7 +36,7 @@ class GUI_menubar(Tkinter.Menu):
         filemenu.add_separator()
         filemenu.add_command(label="Exit", command=self.exit_callback)
         
-        helpmenu = Tkinter.Menu(self, tearoff=0)
+        helpmenu = tk.Menu(self, tearoff=0)
         self.add_cascade(label="Help", menu=helpmenu)
         helpmenu.add_command(label="About...", command=self.callback)
         

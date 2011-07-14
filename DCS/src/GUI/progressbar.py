@@ -1,5 +1,10 @@
 # adopted from http://code.activestate.com/recipes/492230-progress_barpy/
-import Tkinter
+try:
+    # Python2
+    import Tkinter as tk
+except ImportError:
+    # Python3
+    import tkinter as tk
 
 ################################################################################
 
@@ -7,10 +12,10 @@ class ProgressBar(object):
 
     # Create Progress Bar
     def __init__(self, width, height):
-        self.__root = Tkinter.Toplevel()
+        self.__root = tk.Toplevel()
         self.__root.resizable(False, False)
         self.__root.title('Progress')
-        self.__canvas = Tkinter.Canvas(self.__root, width=width, height=height)
+        self.__canvas = tk.Canvas(self.__root, width=width, height=height)
         self.__canvas.grid()
         self.__width = width
         self.__height = height        
@@ -34,7 +39,7 @@ class ProgressBar(object):
 
     # Update Progress Bar
     def update(self, ratio):
-        self.__canvas.delete(Tkinter.ALL)
+        self.__canvas.delete(tk.ALL)
         self.__canvas.create_rectangle(0, 0, self.__width * ratio, \
                                        self.__height, fill='blue')
         self.__root.update()

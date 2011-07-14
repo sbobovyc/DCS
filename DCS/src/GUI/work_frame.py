@@ -3,14 +3,20 @@ Created on June 28, 2011
 
 @author: sbobovyc
 """
-import Tkinter
+
+try:
+    # Python2
+    import Tkinter as tk
+except ImportError:
+    # Python3
+    import tkinter as tk
 
 from thumbnail import GUI_thumbnail
 from spin_label import GUI_spin_label
 from layer_list import GUI_layer_list
 from DCS import Layer
 
-class GUI_work_frame(Tkinter.Frame):
+class GUI_work_frame(tk.Frame):
     
     def __init__(self, parent, controller):
         self.name = "work_frame"
@@ -21,7 +27,7 @@ class GUI_work_frame(Tkinter.Frame):
         self.width = 400
         self.height = 400
         self.num_colors = 3
-        self.selected_layer = Tkinter.ANCHOR
+        self.selected_layer = tk.ANCHOR
         self.default_octave_count = 2
         self.default_frequency = 0.04
         self.default_persistence = 0.02 
@@ -30,20 +36,20 @@ class GUI_work_frame(Tkinter.Frame):
         self.default_z = 1.0
         
         # initialize the frame
-        Tkinter.Frame.__init__(self, parent, bd=2, relief=Tkinter.FLAT, background="grey")
+        tk.Frame.__init__(self, parent, bd=2, relief=tk.FLAT, background="grey")
                         
         # add widgets to frame
         
         #top of frame, mostly static
         self.thumbnail = GUI_thumbnail(self, self.controller)
-        self.button_generate = Tkinter.Button(self, text="Generate", bd=2, command=self.controller.generate_layers)
+        self.button_generate = tk.Button(self, text="Generate", bd=2, command=self.controller.generate_layers)
         self.button_generate.pack()
         self.width_label = GUI_spin_label(self, text="Width:", from_=1, to=1600, increment=1.0, default=self.width, command=None)
-        self.width_label.pack(anchor=Tkinter.E)                
+        self.width_label.pack(anchor=tk.E)                
         self.height_label = GUI_spin_label(self, text="Height:", from_=1, to=1600, increment=1.0, default=self.height, command=None)
-        self.height_label.pack(anchor=Tkinter.E)
+        self.height_label.pack(anchor=tk.E)
         self.num_colors_label = GUI_spin_label(self, text="Number of Colors", from_=1, to=16, increment=1.0, default=self.num_colors, command=None)
-        self.num_colors_label.pack(anchor=Tkinter.E)
+        self.num_colors_label.pack(anchor=tk.E)
         
         #middle of frame
         self.layer_list = GUI_layer_list(self, self.controller)

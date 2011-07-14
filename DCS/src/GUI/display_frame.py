@@ -3,9 +3,14 @@ Created on June 28, 2011
 
 @author: sbobovyc
 """
-import Tkinter
+try:
+    # Python2
+    import Tkinter as tk
+except ImportError:
+    # Python3
+    import tkinter as tk
 
-class GUI_display_frame(Tkinter.Frame):
+class GUI_display_frame(tk.Frame):
     
     def __init__(self, parent, controller):
         # register with controller
@@ -14,18 +19,18 @@ class GUI_display_frame(Tkinter.Frame):
         self.controller.register(self, self.name)
         
         # create a scrollable canvas
-        Tkinter.Frame.__init__(self, parent, bd=2, relief=Tkinter.FLAT, background="grey")
+        tk.Frame.__init__(self, parent, bd=2, relief=tk.FLAT, background="grey")
                  
-        self.xscrollbar = Tkinter.Scrollbar(self, orient=Tkinter.HORIZONTAL)      
-        self.xscrollbar.pack(side=Tkinter.BOTTOM, fill=Tkinter.X)  
+        self.xscrollbar = tk.Scrollbar(self, orient=tk.HORIZONTAL)      
+        self.xscrollbar.pack(side=tk.BOTTOM, fill=tk.X)  
         
-        self.yscrollbar = Tkinter.Scrollbar(self)
-        self.yscrollbar.pack(side=Tkinter.RIGHT, fill=Tkinter.Y)
+        self.yscrollbar = tk.Scrollbar(self)
+        self.yscrollbar.pack(side=tk.RIGHT, fill=tk.Y)
         
-        self.canvas = Tkinter.Canvas(self, background="grey", bd=0, height=0, width=0,
+        self.canvas = tk.Canvas(self, background="grey", bd=0, height=0, width=0,
                         xscrollcommand=self.xscrollbar.set,
                         yscrollcommand=self.yscrollbar.set)
-        self.canvas.pack(side=Tkinter.LEFT, expand=Tkinter.TRUE, fill=Tkinter.BOTH)
+        self.canvas.pack(side=tk.LEFT, expand=tk.TRUE, fill=tk.BOTH)
         
         self.xscrollbar.config(command=self.canvas.xview)
         self.yscrollbar.config(command=self.canvas.yview)      
