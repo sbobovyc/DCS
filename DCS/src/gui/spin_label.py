@@ -27,6 +27,7 @@ class GUI_spin_label(tk.Frame):
         self.to = to
         self.increment = increment
         self.default = default
+        self.value = tk.StringVar()
         self.state = state
         self.command = command
         self.pack(expand=tk.TRUE, fill=tk.X)
@@ -36,16 +37,21 @@ class GUI_spin_label(tk.Frame):
     def initialize(self):
         self.label = tk.Label(self, text=self.text, bg="grey", relief="sunken")
         self.label.pack(side=tk.LEFT, expand=tk.TRUE, fill=tk.X)
-        self.spinbox = tk.Spinbox(self, from_=self.from_, to=self.to, increment=self.increment, state=self.state, width=4, command=self.command)
+        self.spinbox = tk.Spinbox(self, from_=self.from_, to=self.to, increment=self.increment, state=self.state, width=4, textvariable=self.value, command=self.command)
         self.spinbox.delete(0,"end")
         self.spinbox.insert(0,self.default)
         self.spinbox.pack(side=tk.RIGHT)
+        self.spinbox.bind('<KeyRelease>', self.update)        
 #        self.spinbox.grid_columnconfigure(0, weight=1)
 #        self.spinbox.grid_rowconfigure(0, weight=1)
 #        self.spinbox.grid(row=0,column=1)
+
+    def update(self, event):
+        self.command()
         
-    def get(self):
-        return self.spinbox.get()
+    def get(self):        
+        return self.value.get()
+#        return self.spinbox.get()
     
     def clear(self):
         self.spinbox.delete(0, "end")

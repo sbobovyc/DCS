@@ -1,0 +1,20 @@
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/sbobovyc/DCS/DCS/src/utils/utils.cpp
+libnoise/noise.h
+-
+noise/noise.h
+-
+omp.h
+-
+utils.hpp
+/home/sbobovyc/DCS/DCS/src/utils/utils.hpp
+
+/home/sbobovyc/DCS/DCS/src/utils/utils.hpp
+

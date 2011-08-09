@@ -47,6 +47,9 @@ class GUI_layer_list(Tkinter.Frame):
     def insert_layer(self, layer):        
         self.layers.insert(Tkinter.END, layer.id)
         
+    def remove_all_layers(self):
+        self.layers.delete(0, Tkinter.END)
+        
     def call_back(self, event):
         print "list"
         
@@ -69,8 +72,7 @@ class GUI_layer_list(Tkinter.Frame):
             pass
         else: 
             self.currently_selected_layer = selection[0]
-            self.controller.select_layer(self.currently_selected_layer)
-            print "selection is", selection
+            self.controller.select_layer(self.currently_selected_layer)            
  
     
     

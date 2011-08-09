@@ -5,7 +5,7 @@ Created on June 28, 2011
 """
 import Tkinter
 import ImageTk
-from DCS import Utils
+from utils import Utils
 
 class GUI_thumbnail(Tkinter.Canvas):
     

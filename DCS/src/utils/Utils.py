@@ -144,7 +144,7 @@ def calculate_base_color(colors):
 def draw_blobs(canvas_width, canvas_height, octave_count, frequency, persistence, seed, threshold, z):
 
     path = os.path.dirname(os.path.realpath(__file__))
-    utils = ctypes.CDLL(os.path.join(path, "utils.so"))
+    utils = ctypes.CDLL(os.path.join(path, "build", "libutils.so"))
     canvas_width = ctypes.c_int(canvas_width) 
     canvas_height = ctypes.c_int(canvas_height) 
     octave_count = ctypes.c_int(octave_count)  

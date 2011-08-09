@@ -1,8 +1,8 @@
 import random
 from PIL import Image,ImageTk
-from DCS import Utils
-from DCS import Layer
-from DCS import Base_Layer
+from utils import Utils
+from utils import Layer
+from utils import Base_Layer
 from progressbar import ProgressBar
 
 import Tkinter
@@ -41,6 +41,9 @@ class Controller(object):
         #clear out data        
         del self.layer_list[:]
         del self.histogram[:]
+        
+        # clear out gui
+        self.object_map["work_frame"].layer_list.remove_all_layers()        
         
         #grab params from gui    
         params = self.object_map["work_frame"].get()

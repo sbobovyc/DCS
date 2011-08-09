@@ -14,7 +14,7 @@ except ImportError:
 from thumbnail import GUI_thumbnail
 from spin_label import GUI_spin_label
 from layer_list import GUI_layer_list
-from DCS import Layer
+from utils import Layer
 
 class GUI_work_frame(tk.Frame):
     
@@ -48,11 +48,11 @@ class GUI_work_frame(tk.Frame):
         self.width_label.pack(anchor=tk.E)                
         self.height_label = GUI_spin_label(self, text="Height:", from_=1, to=1600, increment=1.0, default=self.height, command=None)
         self.height_label.pack(anchor=tk.E)
-        self.num_colors_label = GUI_spin_label(self, text="Number of Colors", from_=1, to=16, increment=1.0, default=self.num_colors, command=None)
+        self.num_colors_label = GUI_spin_label(self, text="Number of Colors", from_=1, to=16, increment=1.0, default=self.num_colors, command=self.controller.generate_layers_init)
         self.num_colors_label.pack(anchor=tk.E)
         
         #middle of frame
-        self.layer_list = GUI_layer_list(self, self.controller)
+        self.layer_list = GUI_layer_list(self, self.controller)        
         
         #bottom of rame, layer specific
         #TODO Lots of fixes here 
@@ -86,4 +86,4 @@ class GUI_work_frame(tk.Frame):
         self.z.set(layer.z)
         
     def update_current_layer(self):
-        self.controller.update_layer(self.layer_list.get_currently_selected_layer())
+        self.controller.update_layer(self.layer_list.get_currently_selected_layer())        

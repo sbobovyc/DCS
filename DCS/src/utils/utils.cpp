@@ -6,7 +6,7 @@
  * @description
  */
 
-#include <noise.h>
+#include <libnoise/noise.h>
 #include <omp.h>
 #include "utils.hpp"
 
