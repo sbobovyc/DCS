@@ -1,3 +1,9 @@
+try:
+    # Python2
+    import Tkinter as tk
+except ImportError:
+    # Python3
+    import tkinter as tk
 import random
 from PIL import Image,ImageTk
 from utils import Utils
@@ -44,6 +50,9 @@ class Controller(object):
         
         # clear out gui
         self.object_map["work_frame"].layer_list.remove_all_layers()        
+        
+        # reset fields in gui
+        self.object_map["work_frame"].reset_fields()
         
         #grab params from gui    
         params = self.object_map["work_frame"].get()
@@ -154,7 +163,7 @@ class Controller(object):
         #combine layers                
         self.imagePIL = Utils.combine_layers(image_list, int(params["width"]), int(params["height"]))
         self.imagetk=ImageTk.PhotoImage(self.imagePIL)                       
-        self.object_map["display_frame"].canvas.create_image(0,0,image=self.imagetk)
+        self.object_map["display_frame"].canvas.create_image(0,0,image=self.imagetk, anchor=tk.NW)
         #scroll the canvas        
         self.object_map["display_frame"].canvas.config(scrollregion=self.object_map["display_frame"].canvas.bbox(Tkinter.ALL))
         

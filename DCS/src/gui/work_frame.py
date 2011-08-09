@@ -44,9 +44,9 @@ class GUI_work_frame(tk.Frame):
         self.thumbnail = GUI_thumbnail(self, self.controller)
         self.button_generate = tk.Button(self, text="Generate", bd=2, command=self.controller.generate_layers)
         self.button_generate.pack()
-        self.width_label = GUI_spin_label(self, text="Width:", from_=1, to=1600, increment=1.0, default=self.width, command=None)
+        self.width_label = GUI_spin_label(self, text="Width:", from_=1, to=1600, increment=1.0, default=self.width, command=self.callback)
         self.width_label.pack(anchor=tk.E)                
-        self.height_label = GUI_spin_label(self, text="Height:", from_=1, to=1600, increment=1.0, default=self.height, command=None)
+        self.height_label = GUI_spin_label(self, text="Height:", from_=1, to=1600, increment=1.0, default=self.height, command=self.callback)
         self.height_label.pack(anchor=tk.E)
         self.num_colors_label = GUI_spin_label(self, text="Number of Colors", from_=1, to=16, increment=1.0, default=self.num_colors, command=self.controller.generate_layers_init)
         self.num_colors_label.pack(anchor=tk.E)
@@ -62,7 +62,10 @@ class GUI_work_frame(tk.Frame):
         self.seed = GUI_spin_label(self, text="Seed:", from_=0, to=10000, increment=1.0, default=self.default_seed, command=self.update_current_layer)
         self.threshold = GUI_spin_label(self, text="Threshold:", from_=-5.0, to=5.0, increment=0.01, default=self.default_threshold, command=self.update_current_layer)
         self.z = GUI_spin_label(self, text="Height:", from_=-5.0, to=5.0, increment=0.01, default=self.default_z, command=self.update_current_layer)        
-        
+    
+    def callback(self):
+        pass
+    
     def get(self):
         return {"width":self.width_label.get(), "height":self.height_label.get(), 
                 "num_colors":self.num_colors_label.get(), "octave_count":self.octave_count.get(),
@@ -84,6 +87,15 @@ class GUI_work_frame(tk.Frame):
         self.seed.set(layer.seed)
         self.threshold.set(layer.threshold)
         self.z.set(layer.z)
+    
+    def reset_fields(self):
+        self.clear_fields()
+        self.octave_count.set(self.default_octave_count)
+        self.frequency.set(self.default_frequency)
+        self.persistence.set(self.default_persistence)
+        self.seed.set(self.default_seed)
+        self.threshold.set(self.default_threshold)
+        self.z.set(self.default_z)
         
     def update_current_layer(self):
         self.controller.update_layer(self.layer_list.get_currently_selected_layer())        

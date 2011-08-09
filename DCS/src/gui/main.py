@@ -34,6 +34,7 @@ class GUI_main(tk.Tk):
         tk.Tk.__init__(self,parent)
         self.parent = parent
         self.name = "main"        
+        self.iconbitmap('@/home/sbobovyc/DCS/DCS/src/dcs.xbm')    
         
         # instantiate the controller, register with the controller
         self.controller = Controller.Controller()
@@ -63,5 +64,5 @@ class GUI_main(tk.Tk):
         
 if __name__ == "__main__":
     app = GUI_main(None)
-    app.title('DCS')
+    app.title('DCS')    
     app.mainloop()
