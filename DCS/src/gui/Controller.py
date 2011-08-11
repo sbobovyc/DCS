@@ -5,6 +5,7 @@ except ImportError:
     # Python3
     import tkinter as tk
 import random
+import tkColorChooser
 from PIL import Image,ImageTk
 from utils import Utils
 from utils import Layer
@@ -92,10 +93,23 @@ class Controller(object):
 
         # clear fields in work frame
         self.object_map["work_frame"].clear_fields()
-    
-    ##
+        self.select_layer(0)
+        self.object_map["work_frame"].layer_list.layers.selection_set(0)
+        
+    def set_layer_color(self, layer_id):
+        layer = self.get_layer(layer_id)
+        color = tkColorChooser.askcolor(color=layer.color)[0]
+        print color
+        if color != None:
+            layer.color = color
+        self.select_layer(layer_id)
+    ##    
     # @param layer_id: ID of the selected layer. This may be a string, so it needs
-    # to be converted to an int. 
+    # to be converted to an int.
+    # @return layer
+    def get_layer(self, layer_id):
+        return self.layer_list[int(layer_id)]
+     
     def select_layer(self, layer_id):
         # clear fields in work frame
         self.object_map["work_frame"].clear_fields()
@@ -123,10 +137,13 @@ class Controller(object):
             layer.octave_count = int(params["octave_count"])
             layer.frequency = float(params["frequency"])
             layer.persistence = float(params["persistence"])
-            if params["seed"] == "rand":
+            try:
+                if params["seed"] == "rand":
                     layer.seed = random.randint(0, 1000)
-            else:
+                else:
                     layer.seed = int(params["seed"])
+            except:
+                return #the user did not enter correct information
             
             layer.threshold = float(params["threshold"])
             layer.z =  float(params["z"])
@@ -166,6 +183,8 @@ class Controller(object):
         self.object_map["display_frame"].canvas.create_image(0,0,image=self.imagetk, anchor=tk.NW)
         #scroll the canvas        
         self.object_map["display_frame"].canvas.config(scrollregion=self.object_map["display_frame"].canvas.bbox(Tkinter.ALL))
+        layer_id = self.object_map["layer_list"].get_currently_selected_layer()
+        self.select_layer(layer_id)
         
     def generate_layers2(self):
         #clear out data        

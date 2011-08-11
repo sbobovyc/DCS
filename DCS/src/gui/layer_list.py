@@ -3,9 +3,15 @@ Created on June 28, 2011
 
 @author: sbobovyc
 """
-import Tkinter
+try:
+    # Python2
+    import Tkinter as tk
+except ImportError:
+    # Python3
+    import tkinter as tk
+    
 
-class GUI_layer_list(Tkinter.Frame):
+class GUI_layer_list(tk.Frame):
     
     def __init__(self, parent, controller):
         # register with controller
@@ -19,22 +25,22 @@ class GUI_layer_list(Tkinter.Frame):
         self.currently_selected_layer = None 
         
         # initialize the frame
-        Tkinter.Frame.__init__(self, parent, width=20, background="gray")
-        self.pack(fill=Tkinter.X)
+        tk.Frame.__init__(self, parent, width=20, background="gray")
+        self.pack(fill=tk.X)
         
         # label
-        self.label = Tkinter.Label(self, text=self.text, bg="grey", relief="sunken")
-        self.label.pack(anchor=Tkinter.NW, side=Tkinter.LEFT, expand=Tkinter.TRUE, fill=Tkinter.X)                
+        self.label = tk.Label(self, text=self.text, bg="grey", relief="sunken")
+        self.label.pack(anchor=tk.NW, side=tk.LEFT, expand=tk.TRUE, fill=tk.X)                
         
-        self.current_color = Tkinter.Canvas(self, width=50, height=50)
-        self.current_color.pack(anchor=Tkinter.N, side=Tkinter.LEFT, expand=Tkinter.TRUE, fill=Tkinter.Y)
+        self.current_color = tk.Canvas(self, width=50, height=50)
+        self.current_color.pack(anchor=tk.N, side=tk.LEFT, expand=tk.TRUE, fill=tk.Y)
         
-        self.layers = Tkinter.Listbox(self, width=self.width, height=self.height)
-        self.layers.bind("<Double-Button-1>", self.call_back)
-        self.layers.pack(side=Tkinter.LEFT)
+        self.layers = tk.Listbox(self, width=self.width, height=self.height)
+        self.layers.bind("<Double-Button-1>", self.edit)
+        self.layers.pack(side=tk.LEFT)
           
-        self.scrollbar = Tkinter.Scrollbar(self)
-        self.scrollbar.pack(side=Tkinter.LEFT, fill=Tkinter.Y)
+        self.scrollbar = tk.Scrollbar(self)
+        self.scrollbar.pack(side=tk.LEFT, fill=tk.Y)
         
         # attach listbox to scrollbar
         self.layers.config(yscrollcommand=self.scrollbar.set)
@@ -45,13 +51,14 @@ class GUI_layer_list(Tkinter.Frame):
         
         
     def insert_layer(self, layer):        
-        self.layers.insert(Tkinter.END, layer.id)
+        self.layers.insert(tk.END, layer.id)
         
     def remove_all_layers(self):
-        self.layers.delete(0, Tkinter.END)
+        self.layers.delete(0, tk.END)
         
-    def call_back(self, event):
-        print "list"
+    def edit(self, event):
+        layer_id = self.get_currently_selected_layer()
+        self.controller.set_layer_color(layer_id)
         
     def poll(self):
         # make sure only one element is selected

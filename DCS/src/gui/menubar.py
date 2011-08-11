@@ -10,7 +10,10 @@ except ImportError:
     # Python3
     import tkinter as tk
 import tkFileDialog
+import tkSimpleDialog
 import os
+
+from about_message import About
 
 class GUI_menubar(tk.Menu):
     
@@ -38,11 +41,17 @@ class GUI_menubar(tk.Menu):
         
         helpmenu = tk.Menu(self, tearoff=0)
         self.add_cascade(label="Help", menu=helpmenu)
-        helpmenu.add_command(label="About...", command=self.callback)
+        helpmenu.add_command(label="About...", command=self.about)
         
     def callback(self):
         print "called the callback!"
-    
+        
+    def about(self):
+#        tkMessageBox.showinfo("About DCS", "DCS v0.1a", icon=None)
+        print "about"
+        tkFileDialog.Dialog(self.parent)
+        
+        
     def file_open(self):                
         source_image_path = tkFileDialog.askopenfilename()
         self.controller.open_image(source_image_path) 
