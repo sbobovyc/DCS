@@ -10,10 +10,9 @@ except ImportError:
     # Python3
     import tkinter as tk
 import tkFileDialog
-import tkSimpleDialog
 import os
 
-from about_message import About
+from PopupMessage import PopupMessage
 
 class GUI_menubar(tk.Menu):
     
@@ -23,7 +22,7 @@ class GUI_menubar(tk.Menu):
         self.controller = controller
         self.controller.register(self, self.name)
         # file types
-        self.file_types = [('all files', '.*'), ('', '.png'), ('', '.pgm'), ('', '.jpeg'), ('', '.bmp')]
+        self.file_types = [('', '.png'), ('', '.pgm'), ('', '.jpeg'), ('', '.bmp'), ('all files', '.*')]
         
         # create a menu
         tk.Menu.__init__(self, parent)
@@ -47,13 +46,10 @@ class GUI_menubar(tk.Menu):
         print "called the callback!"
         
     def about(self):
-#        tkMessageBox.showinfo("About DCS", "DCS v0.1a", icon=None)
-        print "about"
-        tkFileDialog.Dialog(self.parent)
-        
+        self.controller.about()        
         
     def file_open(self):                
-        source_image_path = tkFileDialog.askopenfilename()
+        source_image_path = tkFileDialog.askopenfilename(filetypes=self.file_types)
         self.controller.open_image(source_image_path) 
     
     def file_save(self):
@@ -61,10 +57,12 @@ class GUI_menubar(tk.Menu):
         self.controller.save_image(output_image_path)
         
     def file_save_layer(self):
-        output_path = tkFileDialog.asksaveasfilename(filetypes=self.file_types)
-        basename, extension = os.path.splitext(output_path)
-        self.controller.save_layers(basename, extension)
-         
+        try:
+            output_path = tkFileDialog.asksaveasfilename(filetypes=self.file_types)
+            basename, extension = os.path.splitext(output_path)
+            self.controller.save_layers(basename, extension)
+        except:
+            pass
     def exit_callback(self):
         self.parent.quit()
         

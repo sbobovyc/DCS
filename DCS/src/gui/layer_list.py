@@ -22,7 +22,7 @@ class GUI_layer_list(tk.Frame):
         self.width = 4
         self.height = 5
         self.layer_list = []
-        self.currently_selected_layer = None 
+        self.currently_selected_layer = None         
         
         # initialize the frame
         tk.Frame.__init__(self, parent, width=20, background="gray")
@@ -37,7 +37,7 @@ class GUI_layer_list(tk.Frame):
         
         self.layers = tk.Listbox(self, width=self.width, height=self.height)
         self.layers.bind("<Double-Button-1>", self.edit)
-        self.layers.pack(side=tk.LEFT)
+        self.layers.pack(side=tk.LEFT)        
           
         self.scrollbar = tk.Scrollbar(self)
         self.scrollbar.pack(side=tk.LEFT, fill=tk.Y)
@@ -60,16 +60,19 @@ class GUI_layer_list(tk.Frame):
         layer_id = self.get_currently_selected_layer()
         self.controller.set_layer_color(layer_id)
         
-    def poll(self):
-        # make sure only one element is selected
+    def poll(self):        
         selected_layer = self.layers.curselection()
         if selected_layer != self.currently_selected_layer:
             self.list_has_changed(selected_layer)
-            self.currently_selected_layer = selected_layer          
+            self.currently_selected_layer = selected_layer   
+            
         self.after(250, self.poll)
 
     def get_currently_selected_layer(self):
-        return self.currently_selected_layer[0]
+        try:
+            return self.currently_selected_layer[0]
+        except:
+            return 0
     
     def list_has_changed(self, selection):
         # a layer was selected, so signal the controller
@@ -79,7 +82,8 @@ class GUI_layer_list(tk.Frame):
             pass
         else: 
             self.currently_selected_layer = selection[0]
-            self.controller.select_layer(self.currently_selected_layer)            
+            self.controller.select_layer(self.currently_selected_layer)   
+
  
     
     

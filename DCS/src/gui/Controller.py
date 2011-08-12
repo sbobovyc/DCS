@@ -10,6 +10,7 @@ from PIL import Image,ImageTk
 from utils import Utils
 from utils import Layer
 from utils import Base_Layer
+from PopupMessage import PopupMessage
 from progressbar import ProgressBar
 
 import Tkinter
@@ -31,17 +32,31 @@ class Controller(object):
         self.object_map[name] = object
     
     def open_image(self, image_path):
-        self.image_path = image_path
-        self.set_thumbnail(image_path)
-        self.generate_layers_init()
-    
-    def save_image(self, image_path):                
-        self.imagePIL.save(image_path)
-    
+        try:
+            self.image_path = image_path
+            img_info = Utils.get_image_info(self.image_path)
+            PopupMessage(self.object_map["main"], text=img_info, delay=5000, width=200).pack()
+            self.set_thumbnail(image_path)
+            self.generate_layers_init()
+        except:
+            pass
+        
+    def save_image(self, image_path):    
+        try:            
+            self.imagePIL.save(image_path)
+        except:
+            pass
+        
     def save_layers(self, output_path, extension):
-        for layer in self.layer_list:            
-            layer.image.save("%s%s%s" % (output_path, layer.id, extension))
-    
+        try:
+            user_msg = "Generated files:\n"
+            for layer in self.layer_list:    
+                img_name = "%s%s%s" % (output_path, layer.id, extension)
+                user_msg += img_name + "\n"  
+                layer.image.save(img_name)
+            PopupMessage(self.object_map["main"], text=user_msg, delay=5000, width=1000).pack()
+        except:
+            pass
     ##
     # This function generates the initial layers. Parameters are taken from the gui, except the seed.
     def generate_layers_init(self):
@@ -88,18 +103,16 @@ class Controller(object):
         # select the first layer in the list
         # not used, since the user may be confused as to why they have to click again on 
         # a highlighted value
-#        self.object_map["layer_list"].layers.selection_set(first=0) 
-#        self.object_map["layer_list"].layers.activate(0)
-
+        
         # clear fields in work frame
         self.object_map["work_frame"].clear_fields()
-        self.select_layer(0)
-        self.object_map["work_frame"].layer_list.layers.selection_set(0)
+        # select layer 0
+        self.select_layer(0)        
         
     def set_layer_color(self, layer_id):
         layer = self.get_layer(layer_id)
         color = tkColorChooser.askcolor(color=layer.color)[0]
-        print color
+        
         if color != None:
             layer.color = color
         self.select_layer(layer_id)
@@ -119,6 +132,8 @@ class Controller(object):
         self.object_map["work_frame"].set_fields(layer)
         # set color of layer canvas
         self.object_map["layer_list"].current_color.config(bg = ("#%02x%02x%02x" % layer.color))
+        # select the layer in the listbox
+        self.object_map["work_frame"].layer_list.layers.selection_set(layer_id)
                     
     def update_layer(self, layer_id):
         # get the layer from layer_list by id
@@ -233,4 +248,7 @@ class Controller(object):
         
         
     def set_thumbnail(self, image_path):
-        self.object_map["thumbnail"].display_thumbnail(image_path)        
+        self.object_map["thumbnail"].display_thumbnail(image_path)      
+    
+    def about(self):
+        PopupMessage(self.object_map["main"], text="DCS v0.1a", width=100).pack()  

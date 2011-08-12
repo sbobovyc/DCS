@@ -38,10 +38,17 @@ def draw_pixels(ptr, image, color):
 def get_image_pixels(image_path):
     #read image_path
     src_image = Image.open(image_path)    
-    print src_image.format, src_image.size, src_image.mode    
+    
     #put image_path pixels in a list
     pixel_list = list(src_image.getdata())
     return pixel_list
+##
+# @param image_path: full path to the image 
+# @return: string describing the image format and dimensions
+def get_image_info(image_path):
+    #read image_path
+    src_image = Image.open(image_path)        
+    return "%s %s %s" % (src_image.format, src_image.size, src_image.mode)
 
 ##
 # @param pixel_list: list of image pixels 

@@ -31,9 +31,13 @@ class Dialog(Toplevel):
 
         self.protocol("WM_DELETE_WINDOW", self.cancel)
 
-        self.geometry("+%d+%d" % (parent.winfo_rootx()+50,
-                                  parent.winfo_rooty()+50))
-
+        w = parent.winfo_screenwidth()
+        h = parent.winfo_screenheight()
+        rootsize = tuple(int(_) for _ in self.geometry().split('+')[0].split('x'))
+        x = w/2 - rootsize[0]/2
+        y = h/2 - rootsize[1]/2
+        self.geometry("%dx%d+%d+%d" % (rootsize + (x, y)))
+        
         self.initial_focus.focus_set()
 
         self.wait_window(self)
