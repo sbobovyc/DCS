@@ -1,3 +1,3 @@
 #!/bin/env bash
-cd src/GUI
+cd src/gui
 python main.py
