@@ -268,4 +268,9 @@ class Controller(object):
         self.object_map["thumbnail"].display_thumbnail(image_path)      
     
     def about(self):
-        PopupMessage(self.object_map["main"], text="DCS v0.1a", width=100).pack()  
+        aboutString = "DCS v0.1a  Copyright (C) 2011  Stanislav Bobovych \n\
+This program comes with ABSOLUTELY NO WARRANTY; for details go to http://www.gnu.org/copyleft/gpl.html. \n\
+This is free software, and you are welcome to redistribute it under certain conditions."
+    
+        PopupMessage(self.object_map["main"], text=aboutString, delay=4000, width=400).pack()  
+        
