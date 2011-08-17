@@ -1,10 +1,10 @@
 Dependencies:
 g++
-openmp
 libnoise (libraries and headers)
 python2.7
 python2.7-tk
 python-imaging-tk
+cmake
 
 To install dependencies on Ubuntu 11.04:
 sudo apt-get install libnoise-dev python2.7-tk python-imaging-tk -y
@@ -12,14 +12,21 @@ sudo apt-get install libnoise-dev python2.7-tk python-imaging-tk -y
 To checkout from git:
 git clone git://github.com/sbobovyc/DCS.git
 
-To compile:
-cd DCS/DCS
+To compile(Linux):
+cd DCS/DCS/utils
+mkdir build
+cd build
+cmake ..
 make
+
+To compile(Windows)
+cd DCS\DCS\utils
+mkdir build
+cd build
+cmake -G "MinGW Makefiles" -DNOISE_INCLUDE_DIR=/c/libnoise -DNOISE_LIBRARY=/c/libnoise/src ..
+make
+
 
 To run gui:
 bash run-DCS-app.sh
 
-To change libnoise include path:
-cd DCS
-open the Makefile
-change LIBNOISEINC to libnoise include path

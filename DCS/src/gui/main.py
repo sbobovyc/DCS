@@ -4,6 +4,23 @@ Created on June 28, 2011
 
 @author: sbobovyc
 """
+"""   
+    Copyright (C) 2011 Stanislav Bobovych
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+"""
+
 import os
 import sys
 DCS_path = os.path.abspath("..") 
@@ -20,7 +37,9 @@ except ImportError:
 from menubar import GUI_menubar
 from work_frame import GUI_work_frame
 from display_frame import GUI_display_frame
+from utils import Utils
 import Controller
+
 
 class GUI_main(tk.Tk):
     '''
@@ -33,8 +52,12 @@ class GUI_main(tk.Tk):
         '''
         tk.Tk.__init__(self,parent)
         self.parent = parent
-        self.name = "main"        
-        self.iconbitmap('@/home/sbobovyc/DCS/DCS/src/dcs.xbm')    
+        self.name = "main"   
+
+        # if on linux, set the icon
+        if Utils.isLinux():                
+            os.path.join("..", "dcs.xbm")     
+            self.iconbitmap('@../dcs.xbm')    
         
         # instantiate the controller, register with the controller
         self.controller = Controller.Controller()
