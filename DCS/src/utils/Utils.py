@@ -177,15 +177,19 @@ def calculate_base_color(colors):
 # @param z: double
 def draw_blobs(canvas_width, canvas_height, octave_count, frequency, persistence, seed, threshold, z):
 
-    path = os.path.dirname(os.path.realpath(__file__))
-    print path
+    path = os.path.dirname(os.path.realpath(__file__))    
     lib = None
+    lib_path = None
     if isLinux():
         lib = "libutils.so"
+        lib_path = os.path.join(path, "build", lib)
     if isWindows():
-        lib = "libutils.dll"
-    lib_path = os.path.join(path, "build", lib)
-    utils = ctypes.CDLL(lib)
+        #TODO This is a temporary hack to enable windows to load the library.
+        lib_path = "libutils.dll"
+        #lib = "libutils.dll"
+        #lib_path = os.path.join(path, "build", lib)                
+        
+    utils = ctypes.CDLL(lib_path)
     canvas_width = ctypes.c_int(canvas_width) 
     canvas_height = ctypes.c_int(canvas_height) 
     octave_count = ctypes.c_int(octave_count)  
