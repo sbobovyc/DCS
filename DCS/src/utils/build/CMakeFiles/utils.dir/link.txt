@@ -1,1 +1,0 @@
-/usr/bin/c++  -fPIC -O2 -ansi -pedantic  -shared -Wl,-soname,libutils.so -o libutils.so CMakeFiles/utils.dir/utils.cpp.o -L/usr/lib/libnoise.so -lnoise -Wl,-rpath,/usr/lib/libnoise.so 

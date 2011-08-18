@@ -30,6 +30,11 @@ def isLinux():
         return True
     else:
         return False
+def isWindows():
+	if os.sys.platform == "win32":
+		return True
+	else:
+		return False
 ##
 # @param image_list: list of PIL images
 # @param width: width of output image, an integer
@@ -173,7 +178,12 @@ def calculate_base_color(colors):
 def draw_blobs(canvas_width, canvas_height, octave_count, frequency, persistence, seed, threshold, z):
 
     path = os.path.dirname(os.path.realpath(__file__))
-    utils = ctypes.CDLL(os.path.join(path, "build", "libutils.so"))
+    lib = None
+    if isLinux():
+        lib = "libutils.so"
+    if isWindows():
+        lib = "libutils.dll"
+    utils = ctypes.CDLL(os.path.join(path, "build", lib))
     canvas_width = ctypes.c_int(canvas_width) 
     canvas_height = ctypes.c_int(canvas_height) 
     octave_count = ctypes.c_int(octave_count)  

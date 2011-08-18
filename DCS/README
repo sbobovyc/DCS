@@ -23,7 +23,8 @@ To compile(Windows)
 cd DCS\DCS\utils
 mkdir build
 cd build
-cmake -G "MinGW Makefiles" -DNOISE_INCLUDE_DIR=/c/libnoise -DNOISE_LIBRARY=/c/libnoise/src ..
+cmake -G "MSYS Makefiles" -DNOISE_INCLUDE_DIR=/c/Users/sbobovyc/Desktop/libno
+ise/noise -DNOISE_LIBRARY=/c/Users/sbobovyc/Desktop/libnoise/noise/src/.libs ..
 make
 
 
