@@ -66,9 +66,11 @@ class GUI_main(tk.Tk):
         
     def initialize(self):
         # make the main window cover the entire screen
-        self.w, self.h = self.winfo_screenwidth(), self.winfo_screenheight()
-        self.geometry("%dx%d+0+0" % (self.w, self.h))
-                
+        if Utils.isLinux():
+            self.w, self.h = self.winfo_screenwidth(), self.winfo_screenheight()
+            self.geometry("%dx%d+0+0" % (self.w, self.h))
+        if Utils.isWindows():
+            self.wm_state('zoomed')    
         #create menu
         self.menu = GUI_menubar(self, self.controller)
         self.config(menu=self.menu)
