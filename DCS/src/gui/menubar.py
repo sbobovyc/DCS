@@ -39,7 +39,7 @@ class GUI_menubar(tk.Menu):
         self.controller = controller
         self.controller.register(self, self.name)
         # file types
-        self.file_types = [('', '.png'), ('', '.pgm'), ('', '.jpeg'), ('', '.bmp'), ('all files', '.*')]
+        self.file_types = [('', '.png'), ('', '.pgm'), ('', '.jpeg'), ('', '.jpg'), ('', '.bmp'), ('all files', '.*')]
         
         # create a menu
         tk.Menu.__init__(self, parent)
