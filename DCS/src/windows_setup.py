@@ -15,7 +15,7 @@ libstdcpp = os.path.join("c:\\MinGW\\bin\\", "libstdc++-6.dll")
 libgcc = os.path.join("c:\\MinGW\\bin\\", "libgcc_s_dw2-1.dll")
 
 setup(
-    name="DCS v0.1a",
+    name="DCS v0.1b",
     version="0.1",
     description = "Dynamic Camouflage System",
     author="Stanislav Bobovych",
