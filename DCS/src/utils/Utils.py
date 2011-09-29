@@ -183,11 +183,13 @@ def draw_blobs(canvas_width, canvas_height, octave_count, frequency, persistence
     if isLinux():
         lib = "libutils.so"
         lib_path = os.path.join(path, "build", lib)
-    if isWindows():
-        #TODO This is a temporary hack to enable windows to load the library.
+    if isWindows():        
         lib_path = "libutils.dll"
-        #lib = "libutils.dll"
-        #lib_path = os.path.join(path, "build", lib)                
+        if os.path.isfile(lib_path):
+            pass
+        else:
+            lib = "libutils.dll"
+            lib_path = os.path.join(path, "build", lib)                
         
     utils = ctypes.CDLL(lib_path)
     canvas_width = ctypes.c_int(canvas_width) 
