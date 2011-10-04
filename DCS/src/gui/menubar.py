@@ -57,13 +57,17 @@ class GUI_menubar(tk.Menu):
         
         helpmenu = tk.Menu(self, tearoff=0)
         self.add_cascade(label="Help", menu=helpmenu)
+        helpmenu.add_command(label="YouTube tutorial", command=self.tutorial)
         helpmenu.add_command(label="About...", command=self.about)
         
     def callback(self):
         print "called the callback!"
         
     def about(self):
-        self.controller.about()        
+        self.controller.about()  
+    
+    def tutorial(self):
+        self.controller.tutorial()
         
     def file_open(self):                
         source_image_path = tkFileDialog.askopenfilename(filetypes=self.file_types)

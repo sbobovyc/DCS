@@ -23,6 +23,8 @@ except ImportError:
     import tkinter as tk
 import random
 import tkColorChooser
+import webbrowser
+
 from PIL import Image,ImageTk
 from utils import Utils
 from utils import Layer
@@ -272,5 +274,7 @@ class Controller(object):
 This program comes with ABSOLUTELY NO WARRANTY; for details go to http://www.gnu.org/copyleft/gpl.html. \n\
 This is free software, and you are welcome to redistribute it under certain conditions."
     
-        PopupMessage(self.object_map["main"], text=aboutString, delay=4000, width=400).pack()  
-        
+        PopupMessage(self.object_map["main"], text=aboutString, delay=4000, width=400).pack()          
+    
+    def tutorial(self):        
+        webbrowser.open("http://www.youtube.com/watch?v=BNfuJux15Rk")
