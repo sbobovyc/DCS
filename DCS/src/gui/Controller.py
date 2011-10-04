@@ -268,7 +268,7 @@ class Controller(object):
         self.object_map["thumbnail"].display_thumbnail(image_path)      
     
     def about(self):
-        aboutString = "DCS v0.1b  Copyright (C) 2011  Stanislav Bobovych \n\
+        aboutString = "DCS v0.1c  Copyright (C) 2011  Stanislav Bobovych \n\
 This program comes with ABSOLUTELY NO WARRANTY; for details go to http://www.gnu.org/copyleft/gpl.html. \n\
 This is free software, and you are welcome to redistribute it under certain conditions."
     

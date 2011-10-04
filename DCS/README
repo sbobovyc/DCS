@@ -5,6 +5,7 @@ python2.7
 python2.7-tk
 python-imaging-tk
 cmake
+pyinstaller (Windows)
 
 To install dependencies on Ubuntu 11.04:
 sudo apt-get install g++ libnoise-dev python2.7-tk python-imaging-tk cmake -y
@@ -28,7 +29,6 @@ cd build
 cmake -G "MSYS Makefiles" -DNOISE_INCLUDE_DIR=/c/Users/sbobovyc/Desktop/libnoise/noise -DNOISE_LIBRARY=/c/Users/sbobovyc/Desktop/libnoise/noise/src/.libs ..
 make
 
-
-To run gui:
+To run gui(Linux):
 bash run-DCS-app.sh
 

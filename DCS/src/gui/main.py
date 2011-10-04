@@ -39,18 +39,6 @@ from work_frame import GUI_work_frame
 from display_frame import GUI_display_frame
 from utils import Utils
 import Controller
-
-import ctypes
-import win32api
-import win32gui
-import win32process
-import win32con
-
-def windowEnumerationHandler(hwnd, resultList):
-
-    '''Pass to win32gui.EnumWindows() to generate list of window handle, window text tuples.'''
-
-    resultList.append((hwnd, win32gui.GetWindowText(hwnd)))
     
 class GUI_main(tk.Tk):
     '''
@@ -69,42 +57,14 @@ class GUI_main(tk.Tk):
         if Utils.isLinux():                
             os.path.join("..", "dcs.xbm")     
             self.iconbitmap('@../dcs.xbm')    
-        if Utils.isWindows():
-             
-            #print ctypes.windll.kernel32.GetCurrentProcessId()
-            #topWindows = []
-            #win32gui.EnumWindows(windowEnumerationHandler, topWindows)
-            #print topWindows
-            whndl = self.winfo_id() #inner
-            outer = self.wm_frame()
+        if Utils.isWindows():          
+            print os.path.curdir  
+            if os.path.isfile("dcs.ico"):
+                self.iconbitmap(default="dcs.ico")
+            else:               
+                self.iconbitmap(default="..\dcs.ico")
 
-            print whndl            
-            print outer
-            hinst =  win32api.GetModuleHandle(None)
-            print hinst
-            pid, ppid = win32process.GetWindowThreadProcessId(hinst)
-            print win32gui.GetWindowText(hinst)
-            print pid
-            print ppid
-            icon_flags = win32con.LR_LOADFROMFILE | win32con.LR_DEFAULTSIZE
-            hicon = win32gui.LoadImage(whndl,
-                                   "dcs.ico",
-                                   win32con.IMAGE_ICON,
-                                   0,
-                                   0,
-                                   icon_flags)
-            message = win32gui.NIM_MODIFY
-            notify_id = (whndl,
-                          0,
-                          win32gui.NIF_ICON | win32gui.NIF_MESSAGE | win32gui.NIF_TIP,
-                          win32con.WM_USER+20,
-                          hicon,
-                          '')
-        
-            win32gui.Shell_NotifyIcon(message, notify_id)
-            #win32gui.PostMessage(hinst, win32con.WM_CLOSE,0,0)
-            #self.iconbitmap(default="..\dcs.ico")
-        
+                    
         # instantiate the controller, register with the controller
         self.controller = Controller.Controller()
         self.controller.register(self, self.name)

@@ -1,0 +1,7 @@
+Windows:
+1. Have pyinstaller, Python2.7 and other dependencies installed.
+1. Compile the utils library using instructins in the README.
+2. To packe DCS, run dcs.bat.
+3. Copy dcs.ico into dist\
+4. Copy libutils.dll into dist\
+5. Copy dist, rename to DCS and zip. 
