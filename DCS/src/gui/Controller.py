@@ -39,7 +39,9 @@ class Controller(object):
     def __init__(self):
         self.image_path = None  #current image_path
         self.object_map = {}    #map of gui objects (name to object)
+        self.color_filter_list = []   #list of color filter objects
         self.histogram = []     #color histogram         
+        self.num_filtered_pixels = 0    #number of filtered pixels
         self.layer_list = []    #list of layers
         self.imagePIL = None    #generated image, in PIL format
         self.imagetk = None     #generated image, in Tkinter format
@@ -93,9 +95,10 @@ class Controller(object):
         params = self.object_map["work_frame"].get()
          
         #generate histogram
-        pixels = Utils.get_image_pixels(self.image_path)
-        self.histogram = Utils.histogram_colors(pixels)
-        color_list = Utils.calc_colors(self.histogram, int(params["num_colors"]))        
+        pixels = Utils.get_image_pixels(self.image_path)    
+        self.histogram, self.num_filtered_pixels = Utils.histogram_colors(pixels, self.color_filter_list)
+        color_list = Utils.calc_colors(self.histogram, int(params["num_colors"]))   
+        PopupMessage(self.object_map["main"], text="Filtered %i pixels." % self.num_filtered_pixels, delay=5000, width=200).pack()     
         base_color = Utils.calculate_base_color(color_list)
         print color_list
         print base_color       
@@ -269,8 +272,18 @@ class Controller(object):
     def set_thumbnail(self, image_path):
         self.object_map["thumbnail"].display_thumbnail(image_path)      
     
+    def set_filter(self, color1, color2):
+        self.color_filter_list.append(Utils.ColorFilter(color1, color2))
+        if self.image_path != None:
+            self.generate_layers_init()
+            
+    def unset_filter(self):
+        del self.color_filter_list[:]
+        if self.image_path != None:
+            self.generate_layers_init()
+        
     def about(self):
-        aboutString = "DCS v0.1c  Copyright (C) 2011  Stanislav Bobovych \n\
+        aboutString = "DCS v0.2a  Copyright (C) 2011  Stanislav Bobovych \n\
 This program comes with ABSOLUTELY NO WARRANTY; for details go to http://www.gnu.org/copyleft/gpl.html. \n\
 This is free software, and you are welcome to redistribute it under certain conditions."
     

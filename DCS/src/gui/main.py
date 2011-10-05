@@ -33,6 +33,8 @@ try:
 except ImportError:
     # Python3
     import tkinter as tk
+    
+import tkMessageBox
 
 from menubar import GUI_menubar
 from work_frame import GUI_work_frame
@@ -91,6 +93,13 @@ class GUI_main(tk.Tk):
         
         self.display_frame = GUI_display_frame(self.big_frame, self.controller)
         self.display_frame.pack(side=tk.LEFT, expand=tk.TRUE, fill=tk.BOTH)
+        
+        #set quit function
+        self.protocol("WM_DELETE_WINDOW", self.quit)
+        
+    def quit(self):
+        ans = tkMessageBox.askokcancel('', "Really quit?")
+        if ans: self.destroy()
                      
         
 if __name__ == "__main__":

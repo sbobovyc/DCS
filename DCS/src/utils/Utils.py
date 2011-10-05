@@ -25,6 +25,36 @@ import os
 import random
 from PIL import Image
 
+class ColorFilter(object):
+    def __init__(self, color1, color2):
+        self.color_range = color1, color2   # pair of colors which are lists like [r,g,b]
+    
+    def getR1(self):
+        return self.color_range[0][0]
+    
+    def getR2(self):
+        return self.color_range[1][0]
+    
+    def getG1(self):
+        return self.color_range[0][1]
+    
+    def getG2(self):
+        return self.color_range[1][1]
+    
+    def getB1(self):
+        return self.color_range[0][2]
+    
+    def getB2(self):
+        return self.color_range[1][2]
+    
+    def in_range(self, color):
+        if color[0] >= self.getR1() and color[0] <= self.getR2() and \
+            color[1] >= self.getG1() and color[1] <= self.getG2() and \
+            color[2] >= self.getB1() and color[2] <= self.getB2():
+            return True
+        else:
+            return False
+    
 def isLinux():
     if os.sys.platform == "linux2":
         return True
@@ -35,6 +65,13 @@ def isWindows():
 		return True
 	else:
 		return False
+
+def filter_pixel(color, color_filter_list):
+    for color_range in color_filter_list:
+        if color_range.in_range(color):
+            return True
+        else:
+            return False
 ##
 # @param image_list: list of PIL images
 # @param width: width of output image, an integer
@@ -79,16 +116,29 @@ def get_image_info(image_path):
 
 ##
 # @param pixel_list: list of image pixels 
-# @return: a sorted histogram of colors in the image
-def histogram_colors(pixel_list):
+# @param filter_list: list of color_filter objects which define color ranges to be excluded from histogram
+# @return: a sorted histogram of colors in the image and number of filtered pixels
+def histogram_colors(pixel_list, color_filter_list=None):
+    filtered_pixels = 0
     #histogram the pixels
-    histogram = {}
-    for x in pixel_list:
-        if x in histogram:
-            histogram[x] += 1
-        else:
-            histogram[x] = 1
-    
+    if color_filter_list == None or len(color_filter_list) == 0:
+        histogram = {}
+        for x in pixel_list:
+            if x in histogram:
+                histogram[x] += 1
+            else:
+                histogram[x] = 1
+    else:
+        print "Filtering"
+        histogram = {}
+        for x in pixel_list:
+            if not filter_pixel(x, color_filter_list):
+                if x in histogram:
+                    histogram[x] += 1
+                else:
+                    histogram[x] = 1
+            else:
+                filtered_pixels += 1
     #sort the histogram
     keys = histogram.keys()
     keys.sort()
@@ -96,7 +146,7 @@ def histogram_colors(pixel_list):
     for x in keys:
         sorted_histogram.append((x, histogram.get(x)))
             
-    return sorted_histogram
+    return sorted_histogram, filtered_pixels
 
 ##
 # @param histogram: a sorted histogram of colors in an image
@@ -139,6 +189,7 @@ def calc_colors(histogram, numcolors):
             tmp_green += histogram[i][0][1] * weight
             tmp_blue += histogram[i][0][2] * weight
             tmp_weight += histogram[i][1]            
+        # @todo: Division by zero is possible. Need to fix this in the future.
         color_list.append( ((tmp_red/tmp_weight, tmp_green/tmp_weight, tmp_blue/tmp_weight), tmp_weight) )
     # end 3
         
@@ -235,9 +286,12 @@ def source_image_thumbnail(image_path, geometry):
     
 if __name__ == '__main__':
 #    image = os.path.join(os.getcwd(), "image.jpeg")
-    image = "/home/sbobovyc/DCS_github/DCS/DCS/images/image.jpeg"
+#    image = "/home/sbobovyc/DCS_github/DCS/DCS/images/image.jpeg"
+    image = "C:\Users\sbobovyc\workspace\DCS\DCS\images\image.jpeg"
     numcolors = 3
-    hist = histogram_colors(get_image_pixels(image))
+    color_filter = ColorFilter([100,0,0], [50,50,50])
+    #hist, filtered_pixels = histogram_colors(get_image_pixels(image), None)
+    hist, filtered_pixels = histogram_colors(get_image_pixels(image), [color_filter])
     colors = calc_colors(hist, numcolors)
     print colors 
     base_color = calculate_base_color(colors) 

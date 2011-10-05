@@ -19,7 +19,7 @@ Created on June 28, 2011
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
-
+# @todo Fix Tkinter import to be compatible with python 3
 import Tkinter
 import ImageTk
 from utils import Utils

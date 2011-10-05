@@ -30,6 +30,7 @@ except ImportError:
 from thumbnail import GUI_thumbnail
 from spin_label import GUI_spin_label
 from layer_list import GUI_layer_list
+from color_filter import GUI_Color_Filter_Checkbox
 from utils import Layer
 
 class GUI_work_frame(tk.Frame):
@@ -66,7 +67,7 @@ class GUI_work_frame(tk.Frame):
         self.height_label.pack(anchor=tk.E)
         self.num_colors_label = GUI_spin_label(self, text="Number of Colors", from_=2, to=16, increment=1.0, default=self.num_colors, command=self.controller.generate_layers_init)
         self.num_colors_label.pack(anchor=tk.E)
-        
+        self.filter_checkbox = GUI_Color_Filter_Checkbox(self, self.controller)
         #middle of frame
         self.layer_list = GUI_layer_list(self, self.controller)        
         
