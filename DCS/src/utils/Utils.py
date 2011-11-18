@@ -26,8 +26,15 @@ import random
 from PIL import Image
 
 class ColorFilter(object):
-    def __init__(self, color1, color2):
+    def __init__(self, id, color1, color2):
+        self.id = id
         self.color_range = color1, color2   # pair of colors which are lists like [r,g,b]
+    
+    def get_color1(self):
+        return self.color_range[0]
+    
+    def get_color2(self):
+        return self.color_range[1]
     
     def getR1(self):
         return self.color_range[0][0]
@@ -242,7 +249,8 @@ def draw_blobs(canvas_width, canvas_height, octave_count, frequency, persistence
             lib = "libutils.dll"
             lib_path = os.path.join(path, "build", lib)                
         
-    utils = ctypes.CDLL(lib_path)
+    utils = ctypes.CDLL(lib_path)    
+    
     canvas_width = ctypes.c_int(canvas_width) 
     canvas_height = ctypes.c_int(canvas_height) 
     octave_count = ctypes.c_int(octave_count)  
@@ -289,7 +297,7 @@ if __name__ == '__main__':
 #    image = "/home/sbobovyc/DCS_github/DCS/DCS/images/image.jpeg"
     image = "C:\Users\sbobovyc\workspace\DCS\DCS\images\image.jpeg"
     numcolors = 3
-    color_filter = ColorFilter([100,0,0], [50,50,50])
+    color_filter = ColorFilter(0, [100,0,0], [50,50,50])
     #hist, filtered_pixels = histogram_colors(get_image_pixels(image), None)
     hist, filtered_pixels = histogram_colors(get_image_pixels(image), [color_filter])
     colors = calc_colors(hist, numcolors)

@@ -31,6 +31,7 @@ from utils import Layer
 from utils import Base_Layer
 from PopupMessage import PopupMessage
 from progressbar import ProgressBar
+from color_filter_canvas import Color_Filter_Canvas
 
 import Tkinter
 
@@ -271,6 +272,12 @@ class Controller(object):
         
     def set_thumbnail(self, image_path):
         self.object_map["thumbnail"].display_thumbnail(image_path)      
+    
+    def add_filter(self, filter):
+        self.color_filter_list.append(filter)
+        
+    def get_filters(self):
+        return self.color_filter_list
     
     def set_filter(self, color1, color2):
         self.color_filter_list.append(Utils.ColorFilter(color1, color2))

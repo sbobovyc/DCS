@@ -10,7 +10,19 @@ pyinstaller (Windows)
 To install dependencies on Ubuntu 11.04:
 sudo apt-get install g++ libnoise-dev python2.7-tk python-imaging-tk cmake -y
 
-To checkout from git:
+To install dependencies on Windows:
+Install python2.7, PIL, Mingw32, doxygen and cmake
+
+Compiling libnoise from git:
+git clone https://github.com/qknight/libnoise.git
+cd libnoise/
+mkdir build
+cd build
+cmake -G "MSYS Makefiles" ..
+make
+rm src/libnoise.dll src/libnoise.dll.a
+
+To checkout DCS from git:
 git clone git://github.com/sbobovyc/DCS.git
 
 To compile(Linux):
@@ -26,7 +38,7 @@ cd DCS\DCS\utils
 rm -rf build
 mkdir build
 cd build
-cmake -G "MSYS Makefiles" -DNOISE_INCLUDE_DIR=/c/Users/sbobovyc/Desktop/libnoise/noise -DNOISE_LIBRARY=/c/Users/sbobovyc/Desktop/libnoise/noise/src/.libs ..
+cmake -G "MSYS Makefiles" -DNOISE_INCLUDE_DIR=/c/users/sbobovyc/workspace/libnoise/src/noise -DNOISE_LIBRARY=/c/users/sbobovyc/workspace/libnoise/build/src ..
 make
 
 To run gui(Linux):

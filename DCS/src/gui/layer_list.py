@@ -42,7 +42,7 @@ class GUI_layer_list(tk.Frame):
         self.currently_selected_layer = None         
         
         # initialize the frame
-        tk.Frame.__init__(self, parent, width=20, background="gray")
+        tk.Frame.__init__(self, parent, bd=1, relief=tk.SUNKEN, width=20, background="gray")
         self.pack(fill=tk.X)
         
         # label

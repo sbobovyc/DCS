@@ -23,7 +23,7 @@
 
  */
 
-#include <libnoise/noise.h>
+#include <noise.h>
 #include <omp.h>
 #include "utils.hpp"
 
